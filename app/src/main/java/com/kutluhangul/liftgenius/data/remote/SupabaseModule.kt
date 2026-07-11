@@ -28,7 +28,13 @@ object SupabaseModule {
         supabaseKey = BuildConfig.SUPABASE_ANON_KEY,
     ) {
         // Defensive reading: ignore columns the backend may add later (CLAUDE.md section 8).
-        defaultSerializer = KotlinXSerializer(Json { ignoreUnknownKeys = true })
+        // encodeDefaults: insert payloads rely on default values (client-generated UUIDs etc.).
+        defaultSerializer = KotlinXSerializer(
+            Json {
+                ignoreUnknownKeys = true
+                encodeDefaults = true
+            },
+        )
         install(Auth)
         install(Postgrest)
     }
