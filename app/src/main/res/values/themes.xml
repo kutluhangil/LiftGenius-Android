@@ -1,5 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <style name="Theme.LiftGenius" parent="android:Theme.Material.Light.NoActionBar" />
+    <!-- Dark-first brand: dark parent + charcoal window background avoids a white flash on launch. -->
+    <style name="Theme.LiftGenius" parent="android:Theme.Material.NoActionBar">
+        <item name="android:windowBackground">#0F0E13</item>
+    </style>
 </resources>

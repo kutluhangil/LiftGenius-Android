@@ -1,58 +1,140 @@
 package com.kutluhangul.liftgenius.ui.theme
 
-import android.app.Activity
-import android.os.Build
-import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.darkColorScheme
-import androidx.compose.material3.dynamicDarkColorScheme
-import androidx.compose.material3.dynamicLightColorScheme
 import androidx.compose.material3.lightColorScheme
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.platform.LocalContext
+import androidx.compose.runtime.CompositionLocalProvider
+import androidx.compose.runtime.Immutable
+import androidx.compose.runtime.ReadOnlyComposable
+import androidx.compose.runtime.staticCompositionLocalOf
+import androidx.compose.ui.graphics.Brush
+import androidx.compose.ui.graphics.Color
+
+/**
+ * Brand tokens that have no Material 3 color-scheme slot (DESIGN.md §2, §4, §5).
+ * Access via `MaterialTheme.extended`.
+ */
+@Immutable
+data class ExtendedColors(
+    val success: Color,
+    val warning: Color,
+    val textSecondary: Color,
+    val textTertiary: Color,
+    val cardBorder: Color,
+    val glassHairline: Color,
+    val glassSpecular: Color,
+    val ledgerDivider: Color,
+    val brandGradient: Brush,
+)
+
+private val DarkExtendedColors = ExtendedColors(
+    success = Success,
+    warning = Warning,
+    textSecondary = TextSecondaryDark,
+    textTertiary = TextTertiaryDark,
+    cardBorder = CardBorderDark,
+    glassHairline = GlassHairlineDark,
+    glassSpecular = GlassSpecularDark,
+    ledgerDivider = LedgerDividerDark,
+    brandGradient = BrandGradient,
+)
+
+private val LightExtendedColors = ExtendedColors(
+    success = Success,
+    warning = Warning,
+    textSecondary = TextSecondaryLight,
+    textTertiary = TextTertiaryLight,
+    cardBorder = CardBorderLight,
+    glassHairline = GlassHairlineLight,
+    glassSpecular = GlassSpecularLight,
+    ledgerDivider = LedgerDividerLight,
+    brandGradient = BrandGradient,
+)
+
+val LocalExtendedColors = staticCompositionLocalOf { DarkExtendedColors }
 
 private val DarkColorScheme = darkColorScheme(
-    primary = Purple80,
-    secondary = PurpleGrey80,
-    tertiary = Pink80
+    primary = Accent,
+    onPrimary = OnAccent,
+    primaryContainer = AccentContainerDark,
+    onPrimaryContainer = OnAccentContainerDark,
+    secondary = AccentSecondary,
+    onSecondary = OnAccentSecondary,
+    secondaryContainer = AccentSecondaryContainerDark,
+    onSecondaryContainer = OnAccentSecondaryContainerDark,
+    tertiary = AccentMid,
+    onTertiary = OnAccent,
+    background = BgPrimaryDark,
+    onBackground = TextPrimaryDark,
+    surface = BgPrimaryDark,
+    onSurface = TextPrimaryDark,
+    surfaceVariant = BgTertiaryDark,
+    onSurfaceVariant = TextSecondaryDark,
+    surfaceContainerLowest = Color(0xFF0B0A0F),
+    surfaceContainerLow = BgSecondaryDark,
+    surfaceContainer = BgSecondaryDark,
+    surfaceContainerHigh = BgTertiaryDark,
+    surfaceContainerHighest = Color(0xFF2C2B35),
+    error = Danger,
+    onError = Color(0xFF2B0508),
+    errorContainer = Color(0xFF3D1215),
+    onErrorContainer = Color(0xFFFFC9CD),
+    outline = GlassHairlineDark,
+    outlineVariant = LedgerDividerDark,
 )
 
 private val LightColorScheme = lightColorScheme(
-    primary = Purple40,
-    secondary = PurpleGrey40,
-    tertiary = Pink40
-
-    /* Other default colors to override
-    background = Color(0xFFFFFBFE),
-    surface = Color(0xFFFFFBFE),
-    onPrimary = Color.White,
-    onSecondary = Color.White,
-    onTertiary = Color.White,
-    onBackground = Color(0xFF1C1B1F),
-    onSurface = Color(0xFF1C1B1F),
-    */
+    primary = Accent,
+    onPrimary = OnAccent,
+    primaryContainer = AccentContainerLight,
+    onPrimaryContainer = OnAccentContainerLight,
+    secondary = AccentSecondary,
+    onSecondary = OnAccentSecondary,
+    secondaryContainer = AccentSecondaryContainerLight,
+    onSecondaryContainer = OnAccentSecondaryContainerLight,
+    tertiary = AccentMid,
+    onTertiary = OnAccent,
+    background = BgPrimaryLight,
+    onBackground = TextPrimaryLight,
+    surface = BgSecondaryLight,
+    onSurface = TextPrimaryLight,
+    surfaceVariant = BgTertiaryLight,
+    onSurfaceVariant = TextSecondaryLight,
+    surfaceContainerLowest = Color.White,
+    surfaceContainerLow = BgSecondaryLight,
+    surfaceContainer = Color(0xFFF3F0F6),
+    surfaceContainerHigh = BgTertiaryLight,
+    surfaceContainerHighest = Color(0xFFE2DEE8),
+    error = Danger,
+    onError = Color.White,
+    errorContainer = Color(0xFFFFD9DB),
+    onErrorContainer = Color(0xFF40060C),
+    outline = TextPrimaryLight.copy(alpha = 0.12f),
+    outlineVariant = LedgerDividerLight,
 )
 
 @Composable
 fun LiftGeniusTheme(
-    darkTheme: Boolean = isSystemInDarkTheme(),
-    // Dynamic color is available on Android 12+
-    dynamicColor: Boolean = true,
-    content: @Composable () -> Unit
+    // Dark-first "Obsidian Glass" brand (DESIGN.md §5 note): the app defaults to dark
+    // regardless of system setting until an in-app theme preference exists.
+    darkTheme: Boolean = true,
+    content: @Composable () -> Unit,
 ) {
-    val colorScheme = when {
-        dynamicColor && Build.VERSION.SDK_INT >= Build.VERSION_CODES.S -> {
-            val context = LocalContext.current
-            if (darkTheme) dynamicDarkColorScheme(context) else dynamicLightColorScheme(context)
-        }
+    val colorScheme = if (darkTheme) DarkColorScheme else LightColorScheme
+    val extendedColors = if (darkTheme) DarkExtendedColors else LightExtendedColors
 
-        darkTheme -> DarkColorScheme
-        else -> LightColorScheme
+    CompositionLocalProvider(LocalExtendedColors provides extendedColors) {
+        MaterialTheme(
+            colorScheme = colorScheme,
+            typography = Typography,
+            shapes = Shapes,
+            content = content,
+        )
     }
-
-    MaterialTheme(
-        colorScheme = colorScheme,
-        typography = Typography,
-        content = content
-    )
 }
+
+val MaterialTheme.extended: ExtendedColors
+    @Composable
+    @ReadOnlyComposable
+    get() = LocalExtendedColors.current
