@@ -40,13 +40,18 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.kutluhangul.liftgenius.R
+import com.kutluhangul.liftgenius.ui.ai.AiNutritionScreen
+import com.kutluhangul.liftgenius.ui.ai.AiWorkoutScreen
 import com.kutluhangul.liftgenius.ui.calendar.CalendarScreen
 import com.kutluhangul.liftgenius.ui.clients.AddClientScreen
 import com.kutluhangul.liftgenius.ui.clients.ClientDetailScreen
 import com.kutluhangul.liftgenius.ui.clients.ClientListScreen
+import com.kutluhangul.liftgenius.ui.clients.EditClientScreen
 import com.kutluhangul.liftgenius.ui.components.ambientGlow
 import com.kutluhangul.liftgenius.ui.dashboard.DashboardScreen
 import com.kutluhangul.liftgenius.ui.finance.FinanceScreen
+import com.kutluhangul.liftgenius.ui.plans.NutritionPlanScreen
+import com.kutluhangul.liftgenius.ui.plans.WorkoutPlanScreen
 import com.kutluhangul.liftgenius.ui.profile.ProfileScreen
 
 object MainRoutes {
@@ -57,8 +62,18 @@ object MainRoutes {
     const val PROFILE = "profile"
     const val CLIENT_DETAIL = "client/{clientId}"
     const val CLIENT_ADD = "client_add"
+    const val CLIENT_EDIT = "client_edit/{clientId}"
+    const val AI_WORKOUT = "ai_workout/{clientId}"
+    const val AI_NUTRITION = "ai_nutrition/{clientId}"
+    const val WORKOUT_PLAN = "workout_plan/{planId}"
+    const val NUTRITION_PLAN = "nutrition_plan/{planId}"
 
     fun clientDetail(clientId: String) = "client/$clientId"
+    fun clientEdit(clientId: String) = "client_edit/$clientId"
+    fun aiWorkout(clientId: String) = "ai_workout/$clientId"
+    fun aiNutrition(clientId: String) = "ai_nutrition/$clientId"
+    fun workoutPlan(planId: String) = "workout_plan/$planId"
+    fun nutritionPlan(planId: String) = "nutrition_plan/$planId"
 }
 
 private data class TabItem(
@@ -178,8 +193,66 @@ private fun MainNavGraph(navController: NavHostController, modifier: Modifier = 
         }
         composable(MainRoutes.FINANCE) { FinanceScreen() }
         composable(MainRoutes.PROFILE) { ProfileScreen() }
-        composable(MainRoutes.CLIENT_DETAIL) {
-            ClientDetailScreen(onBack = { navController.popBackStack() })
+        composable(MainRoutes.CLIENT_DETAIL) { entry ->
+            val clientId = entry.arguments?.getString("clientId").orEmpty()
+            val refreshRequested by entry.savedStateHandle
+                .getStateFlow("refresh_detail", false)
+                .collectAsState()
+            ClientDetailScreen(
+                onBack = { navController.popBackStack() },
+                onEdit = { id -> navController.navigate(MainRoutes.clientEdit(id)) },
+                onDeleted = {
+                    navController.previousBackStackEntry
+                        ?.savedStateHandle
+                        ?.set("refresh_clients", true)
+                    navController.popBackStack()
+                },
+                onOpenAiWorkout = { navController.navigate(MainRoutes.aiWorkout(clientId)) },
+                onOpenAiNutrition = { navController.navigate(MainRoutes.aiNutrition(clientId)) },
+                onOpenWorkoutPlan = { id -> navController.navigate(MainRoutes.workoutPlan(id)) },
+                onOpenNutritionPlan = { id -> navController.navigate(MainRoutes.nutritionPlan(id)) },
+                refreshRequested = refreshRequested,
+                onRefreshConsumed = { entry.savedStateHandle["refresh_detail"] = false },
+            )
+        }
+        composable(MainRoutes.AI_WORKOUT) {
+            AiWorkoutScreen(
+                onBack = { navController.popBackStack() },
+                onSaved = {
+                    navController.previousBackStackEntry
+                        ?.savedStateHandle
+                        ?.set("refresh_detail", true)
+                    navController.popBackStack()
+                },
+            )
+        }
+        composable(MainRoutes.AI_NUTRITION) {
+            AiNutritionScreen(
+                onBack = { navController.popBackStack() },
+                onSaved = {
+                    navController.previousBackStackEntry
+                        ?.savedStateHandle
+                        ?.set("refresh_detail", true)
+                    navController.popBackStack()
+                },
+            )
+        }
+        composable(MainRoutes.WORKOUT_PLAN) {
+            WorkoutPlanScreen(onBack = { navController.popBackStack() })
+        }
+        composable(MainRoutes.NUTRITION_PLAN) {
+            NutritionPlanScreen(onBack = { navController.popBackStack() })
+        }
+        composable(MainRoutes.CLIENT_EDIT) {
+            EditClientScreen(
+                onBack = { navController.popBackStack() },
+                onSaved = {
+                    navController.previousBackStackEntry
+                        ?.savedStateHandle
+                        ?.set("refresh_detail", true)
+                    navController.popBackStack()
+                },
+            )
         }
         composable(MainRoutes.CLIENT_ADD) {
             AddClientScreen(

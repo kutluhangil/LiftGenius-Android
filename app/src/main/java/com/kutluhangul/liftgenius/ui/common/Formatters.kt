@@ -36,5 +36,7 @@ object Formatters {
 
     fun dayMonth(date: LocalDate): String = dayMonthFormat.format(date)
 
+    fun fullDate(date: LocalDate): String = fullDateFormat.format(date)
+
     fun weekdayShort(date: LocalDate): String = weekdayShortFormat.format(date)
 }

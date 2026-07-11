@@ -17,6 +17,13 @@ class NutritionRepository @Inject constructor(
     private val supabase: SupabaseClient,
 ) {
 
+    suspend fun getPlan(planId: String): NutritionPlan =
+        supabase.from("nutrition_plans")
+            .select {
+                filter { eq("id", planId) }
+            }
+            .decodeSingle()
+
     suspend fun getPlans(clientId: String): List<NutritionPlan> =
         supabase.from("nutrition_plans")
             .select {

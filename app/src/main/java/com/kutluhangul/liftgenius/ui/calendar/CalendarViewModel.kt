@@ -6,6 +6,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.kutluhangul.liftgenius.data.repository.ClientRepository
 import com.kutluhangul.liftgenius.data.repository.SessionRepository
+import com.kutluhangul.liftgenius.domain.model.NewSession
 import com.kutluhangul.liftgenius.domain.model.Session
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CancellationException
@@ -18,6 +19,8 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import java.time.DayOfWeek
 import java.time.LocalDate
+import java.time.LocalDateTime
+import java.time.LocalTime
 import java.time.ZoneId
 import javax.inject.Inject
 import kotlin.time.ExperimentalTime
@@ -37,7 +40,14 @@ class CalendarViewModel @Inject constructor(
         val selectedDate: LocalDate = LocalDate.now(),
         val weekSessions: List<Session> = emptyList(),
         val clientNames: Map<String, String> = emptyMap(),
+        val isMutating: Boolean = false,
+        val mutationError: String? = null,
+        val mutationCompleted: Boolean = false,
     ) {
+        /** (id, name) options sorted by name — for the session client picker. */
+        val clientOptions: List<Pair<String, String>>
+            get() = clientNames.entries.sortedBy { it.value }.map { it.key to it.value }
+
         val weekDays: List<LocalDate> get() = (0L..6L).map { weekStart.plusDays(it) }
 
         fun sessionsOn(date: LocalDate, zone: ZoneId = ZoneId.systemDefault()): List<Session> =
@@ -90,5 +100,48 @@ class CalendarViewModel @Inject constructor(
             it.copy(weekStart = newStart, selectedDate = newStart)
         }
         loadWeek()
+    }
+
+    fun addSession(
+        clientId: String?,
+        date: LocalDate,
+        time: LocalTime,
+        durationText: String,
+        title: String,
+        notes: String,
+    ) {
+        if (clientId == null) {
+            _uiState.update { it.copy(mutationError = "Müşteri seç.") }
+            return
+        }
+        val duration = durationText.trim().toIntOrNull() ?: 60
+        val zone = ZoneId.systemDefault()
+        val instant = LocalDateTime.of(date, time).atZone(zone).toInstant().toKotlinInstant()
+        viewModelScope.launch {
+            _uiState.update { it.copy(isMutating = true, mutationError = null) }
+            try {
+                sessionRepository.addSession(
+                    NewSession(
+                        clientId = clientId,
+                        date = instant,
+                        durationMinutes = duration,
+                        title = title.trim().ifBlank { null },
+                        notes = notes.trim().ifBlank { null },
+                    ),
+                )
+                _uiState.update {
+                    it.copy(isMutating = false, mutationCompleted = true, selectedDate = date)
+                }
+                loadWeek()
+            } catch (e: CancellationException) {
+                throw e
+            } catch (e: Exception) {
+                _uiState.update { it.copy(isMutating = false, mutationError = e.message ?: "Seans kaydedilemedi.") }
+            }
+        }
+    }
+
+    fun consumeMutation() {
+        _uiState.update { it.copy(mutationCompleted = false, mutationError = null) }
     }
 }

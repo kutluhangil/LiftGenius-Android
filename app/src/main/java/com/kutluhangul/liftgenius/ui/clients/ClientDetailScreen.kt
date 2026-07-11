@@ -16,16 +16,25 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
+import androidx.compose.material.icons.filled.Delete
+import androidx.compose.material.icons.filled.Edit
+import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.kutluhangul.liftgenius.R
@@ -42,12 +51,40 @@ import com.kutluhangul.liftgenius.ui.theme.Spacing
 import com.kutluhangul.liftgenius.ui.theme.extended
 import kotlin.time.ExperimentalTime
 
+private enum class DetailSheet { NONE, PACKAGE, PROGRESS, PR }
+
 @Composable
 fun ClientDetailScreen(
     onBack: () -> Unit,
+    onEdit: (String) -> Unit,
+    onDeleted: () -> Unit,
+    onOpenAiWorkout: () -> Unit,
+    onOpenAiNutrition: () -> Unit,
+    onOpenWorkoutPlan: (String) -> Unit,
+    onOpenNutritionPlan: (String) -> Unit,
+    refreshRequested: Boolean = false,
+    onRefreshConsumed: () -> Unit = {},
     viewModel: ClientDetailViewModel = hiltViewModel(),
 ) {
     val uiState by viewModel.uiState.collectAsState()
+    var activeSheet by remember { mutableStateOf(DetailSheet.NONE) }
+    var showDeleteDialog by remember { mutableStateOf(false) }
+
+    LaunchedEffect(refreshRequested) {
+        if (refreshRequested) {
+            viewModel.load()
+            onRefreshConsumed()
+        }
+    }
+    LaunchedEffect(uiState.deleted) {
+        if (uiState.deleted) onDeleted()
+    }
+    LaunchedEffect(uiState.mutationCompleted) {
+        if (uiState.mutationCompleted) {
+            activeSheet = DetailSheet.NONE
+            viewModel.consumeMutation()
+        }
+    }
 
     Column(
         modifier = Modifier
@@ -67,7 +104,23 @@ fun ClientDetailScreen(
             Text(
                 text = uiState.client?.fullName.orEmpty(),
                 style = MaterialTheme.typography.titleMedium,
+                modifier = Modifier.weight(1f),
             )
+            uiState.client?.let { client ->
+                IconButton(onClick = { onEdit(client.id) }) {
+                    Icon(
+                        Icons.Filled.Edit,
+                        contentDescription = stringResource(R.string.action_edit),
+                    )
+                }
+                IconButton(onClick = { showDeleteDialog = true }) {
+                    Icon(
+                        Icons.Filled.Delete,
+                        contentDescription = stringResource(R.string.action_delete),
+                        tint = MaterialTheme.colorScheme.error,
+                    )
+                }
+            }
         }
         when {
             uiState.isLoading -> LoadingState()
@@ -75,13 +128,88 @@ fun ClientDetailScreen(
                 message = uiState.error ?: stringResource(R.string.state_error_generic),
                 onRetry = viewModel::load,
             )
-            uiState.client != null -> DetailContent(uiState)
+            uiState.client != null -> DetailContent(
+                uiState = uiState,
+                onAddPackage = {
+                    viewModel.consumeMutation()
+                    activeSheet = DetailSheet.PACKAGE
+                },
+                onAddProgress = {
+                    viewModel.consumeMutation()
+                    activeSheet = DetailSheet.PROGRESS
+                },
+                onAddPr = {
+                    viewModel.consumeMutation()
+                    activeSheet = DetailSheet.PR
+                },
+                onOpenAiWorkout = onOpenAiWorkout,
+                onOpenAiNutrition = onOpenAiNutrition,
+                onOpenWorkoutPlan = onOpenWorkoutPlan,
+                onOpenNutritionPlan = onOpenNutritionPlan,
+            )
         }
+    }
+
+    if (showDeleteDialog) {
+        AlertDialog(
+            onDismissRequest = { showDeleteDialog = false },
+            title = { Text(stringResource(R.string.delete_client_title)) },
+            text = { Text(stringResource(R.string.delete_client_body)) },
+            confirmButton = {
+                TextButton(
+                    onClick = {
+                        showDeleteDialog = false
+                        viewModel.deleteClient()
+                    },
+                ) {
+                    Text(
+                        text = stringResource(R.string.action_delete),
+                        color = MaterialTheme.colorScheme.error,
+                    )
+                }
+            },
+            dismissButton = {
+                TextButton(onClick = { showDeleteDialog = false }) {
+                    Text(stringResource(R.string.action_cancel))
+                }
+            },
+        )
+    }
+
+    when (activeSheet) {
+        DetailSheet.PACKAGE -> AddPackageSheet(
+            isSaving = uiState.isMutating,
+            error = uiState.mutationError,
+            onDismiss = { activeSheet = DetailSheet.NONE },
+            onSave = viewModel::addPackage,
+        )
+        DetailSheet.PROGRESS -> AddProgressSheet(
+            isSaving = uiState.isMutating,
+            error = uiState.mutationError,
+            onDismiss = { activeSheet = DetailSheet.NONE },
+            onSave = viewModel::addProgress,
+        )
+        DetailSheet.PR -> AddPrSheet(
+            isSaving = uiState.isMutating,
+            error = uiState.mutationError,
+            onDismiss = { activeSheet = DetailSheet.NONE },
+            onSave = viewModel::addPr,
+        )
+        DetailSheet.NONE -> Unit
     }
 }
 
 @Composable
-private fun DetailContent(uiState: ClientDetailViewModel.UiState) {
+private fun DetailContent(
+    uiState: ClientDetailViewModel.UiState,
+    onAddPackage: () -> Unit,
+    onAddProgress: () -> Unit,
+    onAddPr: () -> Unit,
+    onOpenAiWorkout: () -> Unit,
+    onOpenAiNutrition: () -> Unit,
+    onOpenWorkoutPlan: (String) -> Unit,
+    onOpenNutritionPlan: (String) -> Unit,
+) {
     val client = requireNotNull(uiState.client)
 
     LazyColumn(
@@ -92,7 +220,12 @@ private fun DetailContent(uiState: ClientDetailViewModel.UiState) {
         item { HeaderSection(client) }
         item { ContactSection(client) }
 
-        item { SectionTitle(stringResource(R.string.client_detail_packages)) }
+        item {
+            SectionHeader(
+                title = stringResource(R.string.client_detail_packages),
+                onAdd = onAddPackage,
+            )
+        }
         if (uiState.packages.isEmpty()) {
             item { EmptyState(stringResource(R.string.detail_empty_packages)) }
         } else {
@@ -136,7 +269,89 @@ private fun DetailContent(uiState: ClientDetailViewModel.UiState) {
             }
         }
 
-        item { SectionTitle(stringResource(R.string.client_detail_progress)) }
+        item {
+            SectionHeader(
+                title = stringResource(R.string.client_detail_workout_plans),
+                onAdd = onOpenAiWorkout,
+                actionLabel = stringResource(R.string.action_generate_ai),
+            )
+        }
+        if (uiState.workoutPlans.isEmpty()) {
+            item { EmptyState(stringResource(R.string.detail_empty_workout)) }
+        } else {
+            items(uiState.workoutPlans, key = { it.id }) { plan ->
+                GlassCard(
+                    onClick = { onOpenWorkoutPlan(plan.id) },
+                    modifier = Modifier.fillMaxWidth(),
+                ) {
+                    Row(verticalAlignment = Alignment.CenterVertically) {
+                        Column(Modifier.weight(1f)) {
+                            Text(plan.title, style = MaterialTheme.typography.titleSmall)
+                            plan.description?.let { description ->
+                                Spacer(Modifier.height(Spacing.xs))
+                                Text(
+                                    text = description,
+                                    style = MaterialTheme.typography.bodySmall,
+                                    color = MaterialTheme.extended.textSecondary,
+                                    maxLines = 1,
+                                    overflow = TextOverflow.Ellipsis,
+                                )
+                            }
+                        }
+                        Text(
+                            text = Formatters.dayMonth(plan.createdAt),
+                            style = MaterialTheme.typography.labelSmall,
+                            color = MaterialTheme.extended.textSecondary,
+                        )
+                    }
+                }
+            }
+        }
+
+        item {
+            SectionHeader(
+                title = stringResource(R.string.client_detail_nutrition_plans),
+                onAdd = onOpenAiNutrition,
+                actionLabel = stringResource(R.string.action_generate_ai),
+            )
+        }
+        if (uiState.nutritionPlans.isEmpty()) {
+            item { EmptyState(stringResource(R.string.detail_empty_nutrition)) }
+        } else {
+            items(uiState.nutritionPlans, key = { it.id }) { plan ->
+                GlassCard(
+                    onClick = { onOpenNutritionPlan(plan.id) },
+                    modifier = Modifier.fillMaxWidth(),
+                ) {
+                    Row(verticalAlignment = Alignment.CenterVertically) {
+                        Column(Modifier.weight(1f)) {
+                            Text(
+                                text = "${plan.dailyCalories} kcal",
+                                style = MaterialTheme.typography.titleSmall,
+                            )
+                            Spacer(Modifier.height(Spacing.xs))
+                            Text(
+                                text = "P ${plan.proteinGrams}g · K ${plan.carbGrams}g · Y ${plan.fatGrams}g",
+                                style = MaterialTheme.typography.bodySmall,
+                                color = MaterialTheme.extended.textSecondary,
+                            )
+                        }
+                        Text(
+                            text = Formatters.dayMonth(plan.createdAt),
+                            style = MaterialTheme.typography.labelSmall,
+                            color = MaterialTheme.extended.textSecondary,
+                        )
+                    }
+                }
+            }
+        }
+
+        item {
+            SectionHeader(
+                title = stringResource(R.string.client_detail_progress),
+                onAdd = onAddProgress,
+            )
+        }
         val latestProgress = uiState.progress.firstOrNull()
         if (latestProgress == null) {
             item { EmptyState(stringResource(R.string.detail_empty_progress)) }
@@ -158,7 +373,12 @@ private fun DetailContent(uiState: ClientDetailViewModel.UiState) {
             }
         }
 
-        item { SectionTitle(stringResource(R.string.client_detail_prs)) }
+        item {
+            SectionHeader(
+                title = stringResource(R.string.client_detail_prs),
+                onAdd = onAddPr,
+            )
+        }
         if (uiState.prs.isEmpty()) {
             item { EmptyState(stringResource(R.string.detail_empty_prs)) }
         } else {
@@ -182,6 +402,23 @@ private fun DetailContent(uiState: ClientDetailViewModel.UiState) {
                     }
                 }
             }
+        }
+    }
+}
+
+@Composable
+private fun SectionHeader(title: String, onAdd: () -> Unit, actionLabel: String? = null) {
+    Row(
+        verticalAlignment = Alignment.CenterVertically,
+        modifier = Modifier.fillMaxWidth(),
+    ) {
+        Text(
+            text = title,
+            style = MaterialTheme.typography.titleLarge,
+            modifier = Modifier.weight(1f),
+        )
+        TextButton(onClick = onAdd) {
+            Text(actionLabel ?: "+ ${stringResource(R.string.action_add)}")
         }
     }
 }
@@ -254,13 +491,5 @@ private fun MeasurementItem(label: String, value: String) {
             style = MaterialTheme.typography.labelSmall,
             color = MaterialTheme.extended.textSecondary,
         )
-    }
-}
-
-@Composable
-private fun SectionTitle(text: String) {
-    Column {
-        Spacer(Modifier.height(Spacing.sm))
-        Text(text = text, style = MaterialTheme.typography.titleLarge)
     }
 }

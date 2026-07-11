@@ -21,6 +21,13 @@ class WorkoutRepository @Inject constructor(
     private val supabase: SupabaseClient,
 ) {
 
+    suspend fun getPlan(planId: String): WorkoutPlan =
+        supabase.from("workout_plans")
+            .select {
+                filter { eq("id", planId) }
+            }
+            .decodeSingle()
+
     suspend fun getPlans(clientId: String): List<WorkoutPlan> =
         supabase.from("workout_plans")
             .select {

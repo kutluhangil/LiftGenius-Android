@@ -75,4 +75,82 @@
     <!-- Profile -->
     <string name="profile_salon">Salon</string>
     <string name="profile_role">Rol</string>
+
+    <!-- Common actions -->
+    <string name="action_ok">Tamam</string>
+    <string name="action_cancel">Vazgeç</string>
+    <string name="action_edit">Düzenle</string>
+    <string name="action_delete">Sil</string>
+    <string name="action_add">Ekle</string>
+
+    <!-- Client edit/delete -->
+    <string name="client_edit_title">Müşteriyi Düzenle</string>
+    <string name="label_status">Durum</string>
+    <string name="delete_client_title">Müşteriyi sil?</string>
+    <string name="delete_client_body">Bu işlem geri alınamaz. Müşteriye ait kayıtlar etkilenebilir.</string>
+
+    <!-- Add session -->
+    <string name="add_session_title">Yeni Seans</string>
+    <string name="label_client">Müşteri</string>
+    <string name="label_date">Tarih</string>
+    <string name="label_time">Saat</string>
+    <string name="label_duration">Süre (dk)</string>
+    <string name="label_title">Başlık</string>
+    <string name="error_client_required">Müşteri seç.</string>
+
+    <!-- Add package -->
+    <string name="add_package_title">Yeni Paket</string>
+    <string name="label_package_name">Paket Adı</string>
+    <string name="label_total_sessions">Toplam Seans</string>
+    <string name="label_price">Ücret</string>
+    <string name="label_payment_method">Ödeme Yöntemi</string>
+    <string name="label_is_paid">Ödendi</string>
+    <string name="error_package_fields">Paket adı, seans sayısı ve ücret gerekli.</string>
+
+    <!-- Add progress -->
+    <string name="add_progress_title">Yeni Ölçüm</string>
+    <string name="label_body_fat">Yağ (%)</string>
+    <string name="label_muscle_mass">Kas (kg)</string>
+    <string name="label_chest">Göğüs (cm)</string>
+    <string name="label_arm_left">Kol Sol (cm)</string>
+    <string name="label_arm_right">Kol Sağ (cm)</string>
+    <string name="label_waist">Bel (cm)</string>
+    <string name="label_hips">Kalça (cm)</string>
+    <string name="error_progress_fields">En az bir ölçüm değeri gir.</string>
+
+    <!-- Add PR -->
+    <string name="add_pr_title">Yeni PR</string>
+    <string name="label_exercise">Egzersiz</string>
+    <string name="label_pr_weight">Ağırlık (kg)</string>
+    <string name="label_reps">Tekrar</string>
+    <string name="error_pr_fields">Egzersiz, ağırlık ve tekrar gerekli.</string>
+
+    <!-- Plans on client detail -->
+    <string name="client_detail_workout_plans">Antrenman Programları</string>
+    <string name="client_detail_nutrition_plans">Beslenme Planları</string>
+    <string name="detail_empty_workout">Program yok.</string>
+    <string name="detail_empty_nutrition">Beslenme planı yok.</string>
+    <string name="action_generate_ai">AI ile Oluştur</string>
+
+    <!-- AI generation -->
+    <string name="ai_workout_title">AI Antrenman Programı</string>
+    <string name="ai_nutrition_title">AI Beslenme Planı</string>
+    <string name="ai_generate">Oluştur</string>
+    <string name="ai_regenerate">Yeniden Oluştur</string>
+    <string name="ai_days_per_week">Haftalık Gün</string>
+    <string name="ai_level">Seviye</string>
+    <string name="level_beginner">Başlangıç</string>
+    <string name="level_intermediate">Orta</string>
+    <string name="level_advanced">İleri</string>
+    <string name="ai_equipment">Ekipman</string>
+    <string name="ai_preferences">Tercihler / Notlar</string>
+    <string name="ai_target_calories">Hedef Kalori (boş = AI belirlesin)</string>
+    <string name="ai_meals_per_day">Öğün Sayısı</string>
+
+    <!-- Nutrition display -->
+    <string name="label_calories">Kalori</string>
+    <string name="label_protein">Protein (g)</string>
+    <string name="label_carbs">Karbonhidrat (g)</string>
+    <string name="label_fat">Yağ (g)</string>
+    <string name="meal_plan">Öğün Planı</string>
 </resources>
