@@ -1,3 +1,22 @@
 <resources>
     <string name="app_name">LiftGenius</string>
+    <string name="brand_kicker">PERSONAL TRAINER CRM</string>
+    <string name="welcome_tagline">Müşteriler · Programlar · Seanslar</string>
+    <string name="action_login">Giriş Yap</string>
+    <string name="action_register">Kayıt Ol</string>
+    <string name="label_full_name">Ad Soyad</string>
+    <string name="label_email">E-posta</string>
+    <string name="label_password">Şifre</string>
+    <string name="login_title">Tekrar hoş geldin</string>
+    <string name="login_subtitle">Hesabınla giriş yap ve kaldığın yerden devam et.</string>
+    <string name="register_title">Hesap oluştur</string>
+    <string name="register_subtitle">Salonunu ve danışanlarını tek yerden yönet.</string>
+    <string name="prompt_no_account">Hesabın yok mu? Kayıt ol</string>
+    <string name="prompt_have_account">Zaten hesabın var mı? Giriş yap</string>
+    <string name="confirm_email_title">E-postanı kontrol et</string>
+    <string name="confirm_email_body">Kayıt başarılı. E-posta adresine gönderilen onay bağlantısına tıkladıktan sonra giriş yapabilirsin.</string>
+    <string name="action_back_to_login">Giriş ekranına dön</string>
+    <string name="action_sign_out">Çıkış Yap</string>
+    <string name="home_greeting_kicker">HOŞ GELDİN</string>
+    <string name="home_placeholder">Dashboard yakında burada.</string>
 </resources>

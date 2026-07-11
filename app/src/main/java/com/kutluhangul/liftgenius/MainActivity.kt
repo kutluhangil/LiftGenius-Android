@@ -7,33 +7,23 @@ import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.width
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
-import androidx.compose.ui.draw.drawBehind
-import androidx.compose.ui.geometry.Offset
-import androidx.compose.ui.graphics.Brush
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.text.TextStyle
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.dp
-import com.kutluhangul.liftgenius.ui.theme.Accent
-import com.kutluhangul.liftgenius.ui.theme.AccentSecondary
-import com.kutluhangul.liftgenius.ui.theme.BrandGradient
-import com.kutluhangul.liftgenius.ui.theme.KickerLabel
+import androidx.hilt.navigation.compose.hiltViewModel
+import com.kutluhangul.liftgenius.ui.auth.SessionViewModel
+import com.kutluhangul.liftgenius.ui.components.BrandWordmark
+import com.kutluhangul.liftgenius.ui.components.ambientGlow
+import com.kutluhangul.liftgenius.ui.home.HomeScreen
+import com.kutluhangul.liftgenius.ui.navigation.AuthNavHost
 import com.kutluhangul.liftgenius.ui.theme.LiftGeniusTheme
-import com.kutluhangul.liftgenius.ui.theme.Spacing
-import com.kutluhangul.liftgenius.ui.theme.extended
 import dagger.hilt.android.AndroidEntryPoint
+import io.github.jan.supabase.auth.status.SessionStatus
 
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
@@ -46,68 +36,34 @@ class MainActivity : ComponentActivity() {
         )
         setContent {
             LiftGeniusTheme {
-                BrandScreen()
+                LiftGeniusAppRoot()
             }
         }
     }
 }
 
-/** Placeholder brand screen until the auth flow lands (CLAUDE.md section 11). */
+/** Top-level routing driven by Supabase auth state — no manual navigation between flows. */
+@Composable
+fun LiftGeniusAppRoot(sessionViewModel: SessionViewModel = hiltViewModel()) {
+    val status by sessionViewModel.sessionStatus.collectAsState()
+    when (status) {
+        is SessionStatus.Initializing -> BrandScreen()
+        is SessionStatus.Authenticated -> HomeScreen()
+        else -> AuthNavHost()
+    }
+}
+
+/** Splash shown while the stored session is being restored. */
 @Composable
 fun BrandScreen(modifier: Modifier = Modifier) {
-    val glowOrange = Accent.copy(alpha = 0.18f)
-    val glowPink = AccentSecondary.copy(alpha = 0.12f)
-
     Box(
         modifier = modifier
             .fillMaxSize()
             .background(MaterialTheme.colorScheme.background)
-            .drawBehind {
-                // Ambient glow (DESIGN.md §5): orange top-left, pink bottom-right.
-                drawRect(
-                    brush = Brush.radialGradient(
-                        colors = listOf(glowOrange, Color.Transparent),
-                        center = Offset(size.width * 0.12f, size.height * 0.08f),
-                        radius = size.maxDimension * 0.55f,
-                    ),
-                )
-                drawRect(
-                    brush = Brush.radialGradient(
-                        colors = listOf(glowPink, Color.Transparent),
-                        center = Offset(size.width * 0.90f, size.height * 0.92f),
-                        radius = size.maxDimension * 0.55f,
-                    ),
-                )
-            },
+            .ambientGlow(),
         contentAlignment = Alignment.Center,
     ) {
-        Column(horizontalAlignment = Alignment.CenterHorizontally) {
-            Text(
-                text = "PERSONAL TRAINER CRM",
-                style = KickerLabel,
-                color = MaterialTheme.extended.textTertiary,
-            )
-            Spacer(Modifier.height(Spacing.md))
-            Text(
-                text = "LiftGenius",
-                style = MaterialTheme.typography.displayLarge.merge(TextStyle(brush = BrandGradient)),
-            )
-            Spacer(Modifier.height(Spacing.lg))
-            Box(
-                Modifier
-                    .width(56.dp)
-                    .height(4.dp)
-                    .clip(MaterialTheme.shapes.extraLarge)
-                    .background(BrandGradient),
-            )
-            Spacer(Modifier.height(Spacing.lg))
-            Text(
-                text = "Müşteriler · Programlar · Seanslar",
-                style = MaterialTheme.typography.bodyMedium,
-                color = MaterialTheme.extended.textSecondary,
-                textAlign = TextAlign.Center,
-            )
-        }
+        BrandWordmark()
     }
 }
 
