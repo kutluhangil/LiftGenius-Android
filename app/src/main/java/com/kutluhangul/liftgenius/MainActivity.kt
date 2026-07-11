@@ -19,7 +19,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import com.kutluhangul.liftgenius.ui.auth.SessionViewModel
 import com.kutluhangul.liftgenius.ui.components.BrandWordmark
 import com.kutluhangul.liftgenius.ui.components.ambientGlow
-import com.kutluhangul.liftgenius.ui.home.HomeScreen
+import com.kutluhangul.liftgenius.ui.main.MainScreen
 import com.kutluhangul.liftgenius.ui.navigation.AuthNavHost
 import com.kutluhangul.liftgenius.ui.theme.LiftGeniusTheme
 import dagger.hilt.android.AndroidEntryPoint
@@ -48,7 +48,7 @@ fun LiftGeniusAppRoot(sessionViewModel: SessionViewModel = hiltViewModel()) {
     val status by sessionViewModel.sessionStatus.collectAsState()
     when (status) {
         is SessionStatus.Initializing -> BrandScreen()
-        is SessionStatus.Authenticated -> HomeScreen()
+        is SessionStatus.Authenticated -> MainScreen()
         else -> AuthNavHost()
     }
 }
