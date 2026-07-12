@@ -21,8 +21,8 @@ fun AuthNavHost(navController: NavHostController = rememberNavController()) {
     NavHost(navController = navController, startDestination = AuthRoutes.WELCOME) {
         composable(AuthRoutes.WELCOME) {
             WelcomeScreen(
-                onLoginClick = { navController.navigate(AuthRoutes.LOGIN) },
-                onRegisterClick = { navController.navigate(AuthRoutes.REGISTER) },
+                onStart = { navController.navigate(AuthRoutes.REGISTER) },
+                onHaveAccount = { navController.navigate(AuthRoutes.LOGIN) },
             )
         }
         composable(AuthRoutes.LOGIN) {

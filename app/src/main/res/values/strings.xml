@@ -1,7 +1,9 @@
 <resources>
     <string name="app_name">LiftGenius</string>
     <string name="brand_kicker">PERSONAL TRAINER CRM</string>
-    <string name="welcome_tagline">Müşteriler · Programlar · Seanslar</string>
+    <string name="welcome_tagline">Antrenman işini tek ekrandan yönet</string>
+    <string name="action_start">Başla</string>
+    <string name="prompt_have_account_short">Zaten hesabım var</string>
 
     <!-- Auth -->
     <string name="action_login">Giriş Yap</string>
@@ -39,22 +41,44 @@
 
     <!-- Dashboard -->
     <string name="dashboard_kicker">GENEL BAKIŞ</string>
+    <string name="dashboard_performance">PERFORMANS</string>
     <string name="dashboard_active_clients">Aktif Müşteri</string>
     <string name="dashboard_today_sessions">Bugünkü Seans</string>
-    <string name="dashboard_month_revenue">Bu Ay Gelir</string>
-    <string name="dashboard_unpaid">Bekleyen Ödeme</string>
-    <string name="dashboard_today_title">Bugünün Seansları</string>
-    <string name="dashboard_no_sessions">Bugün planlanmış seans yok.</string>
+    <string name="dashboard_finished_packages">Biten Paket</string>
+    <string name="dashboard_overdue">Geciken Ödeme</string>
+    <string name="dashboard_month_revenue_kicker">BU AYKI GELİR</string>
+    <string name="dashboard_today_title">BUGÜNKÜ SEANSLAR</string>
+    <string name="dashboard_session_count">%1$d seans</string>
+    <string name="dashboard_weekly_intensity">Haftalık Seans Yoğunluğu</string>
+    <string name="dashboard_weekly_empty">Bu hafta henüz seans yapılmadı</string>
+    <string name="dashboard_weekly_subtitle">Bu haftaki günlük seans dağılımı</string>
+    <string name="dashboard_monthly_trend">Aylık Gelir Trendi</string>
+    <string name="dashboard_monthly_subtitle">Son 4 ayda kazanılan toplam ücretler</string>
+    <string name="dashboard_rest_day">Bugün seans yok, dinlenme günü!</string>
+    <string name="dashboard_action_new_client">Yeni Müşteri</string>
+    <string name="dashboard_action_add_session">Seans Ekle</string>
+    <string name="greeting_morning">Günaydın</string>
+    <string name="greeting_afternoon">İyi günler</string>
+    <string name="greeting_evening">İyi akşamlar</string>
 
     <!-- Clients -->
-    <string name="clients_search_hint">Müşteri ara…</string>
-    <string name="clients_empty">Henüz müşteri yok. Sağ alttaki + ile ekle.</string>
-    <string name="clients_add_title">Yeni Müşteri</string>
+    <string name="clients_search_hint">İsim, telefon veya e-posta ara…</string>
+    <string name="clients_empty">Henüz müşteri yok</string>
+    <string name="clients_empty_subtitle">İlk müşterinizi ekleyerek başlayın</string>
+    <string name="clients_add_button">Müşteri Ekle</string>
+    <string name="clients_add_title">Yeni Müşteri Ekle</string>
+    <string name="add_client_subtitle">Müşterinizin temel bilgilerini ve fiziksel hedeflerini belirleyin.</string>
+    <string name="client_personal_info">Kişisel Bilgiler</string>
+    <string name="client_physical_goals">Fiziksel Hedefler</string>
+    <string name="client_body_measurements">Vücut Ölçüleri (Opsiyonel)</string>
+    <string name="client_body_measurements_hint">Başlangıç ölçüleri ilk ilerleme kaydı olarak saklanır; sonra grafikte gelişimi takip edebilirsin.</string>
+    <string name="client_save">Müşteriyi Kaydet</string>
+    <string name="label_gender">Cinsiyet</string>
     <string name="label_phone">Telefon</string>
     <string name="label_goal">Hedef</string>
     <string name="label_notes">Notlar</string>
-    <string name="label_weight">Kilo (kg)</string>
-    <string name="label_height">Boy (cm)</string>
+    <string name="label_weight">Kilo</string>
+    <string name="label_height">Boy</string>
     <string name="error_name_required">Ad Soyad gerekli.</string>
     <string name="client_detail_contact">İletişim</string>
     <string name="client_detail_packages">Paketler</string>
@@ -75,6 +99,25 @@
     <string name="finance_empty">Paket kaydı yok.</string>
     <string name="finance_paid">Ödendi</string>
     <string name="finance_unpaid">Ödenmedi</string>
+
+    <!-- Finance & Analysis -->
+    <string name="finance_analysis_title">Finans &amp; Analiz</string>
+    <string name="finance_collected_total">TAHSİL EDİLEN — TOPLAM</string>
+    <string name="finance_paid_pending">%1$d ödendi · %2$d bekliyor</string>
+    <string name="finance_collection_rate">tahsilat</string>
+    <string name="finance_collected">Tahsil Edilen</string>
+    <string name="finance_pending">Bekleyen</string>
+    <string name="finance_total_revenue">TOPLAM CİRO</string>
+    <string name="finance_avg_package">ORT. PAKET</string>
+    <string name="finance_active_package">AKTİF PAKET</string>
+    <string name="finance_goal_streak">HEDEF &amp; SERİ</string>
+    <string name="finance_month_streak">ay serisi</string>
+    <string name="finance_income">Gelir</string>
+    <string name="finance_sessions">Seans</string>
+    <string name="finance_six_month">6 AYLIK GELİR</string>
+    <string name="finance_six_month_subtitle">Aylık tahsil edilen tutarlar</string>
+    <string name="finance_pending_collections">BEKLEYEN TAHSİLATLAR</string>
+    <string name="finance_all_collected">Tüm ödemeler tahsil edildi!</string>
 
     <!-- Profile -->
     <string name="profile_salon">Salon</string>

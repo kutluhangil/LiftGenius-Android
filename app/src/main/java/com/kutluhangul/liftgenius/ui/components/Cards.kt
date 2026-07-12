@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
@@ -52,6 +53,31 @@ fun GlassCard(
             border = BorderStroke(1.dp, MaterialTheme.extended.cardBorder),
         ) {
             Column(modifier = Modifier.padding(Spacing.lg), content = content)
+        }
+    }
+}
+
+/** iOS form section: a titled glass card that stacks its labeled fields with spacing. */
+@Composable
+fun FormGroup(
+    title: String,
+    modifier: Modifier = Modifier,
+    subtitle: String? = null,
+    content: @Composable ColumnScope.() -> Unit,
+) {
+    GlassCard(modifier = modifier.fillMaxWidth()) {
+        Text(title, style = MaterialTheme.typography.titleSmall)
+        subtitle?.let {
+            Spacer(Modifier.height(Spacing.xs))
+            Text(
+                text = it,
+                style = MaterialTheme.typography.bodySmall,
+                color = MaterialTheme.extended.textSecondary,
+            )
+        }
+        Spacer(Modifier.height(Spacing.md))
+        Column(verticalArrangement = androidx.compose.foundation.layout.Arrangement.spacedBy(Spacing.md)) {
+            content()
         }
     }
 }

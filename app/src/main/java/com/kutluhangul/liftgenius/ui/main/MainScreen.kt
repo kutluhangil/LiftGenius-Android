@@ -85,11 +85,11 @@ private data class TabItem(
     val unselectedIcon: ImageVector,
 )
 
+// iOS uses four tabs; Finance is opened from the Dashboard quick action, not a tab.
 private val tabs = listOf(
     TabItem(MainRoutes.DASHBOARD, R.string.tab_dashboard, Icons.Filled.Home, Icons.Outlined.Home),
-    TabItem(MainRoutes.CALENDAR, R.string.tab_calendar, Icons.Filled.CalendarMonth, Icons.Outlined.CalendarMonth),
     TabItem(MainRoutes.CLIENTS, R.string.tab_clients, Icons.Filled.Groups, Icons.Outlined.Groups),
-    TabItem(MainRoutes.FINANCE, R.string.tab_finance, Icons.Filled.Payments, Icons.Outlined.Payments),
+    TabItem(MainRoutes.CALENDAR, R.string.tab_calendar, Icons.Filled.CalendarMonth, Icons.Outlined.CalendarMonth),
     TabItem(MainRoutes.PROFILE, R.string.tab_profile, Icons.Filled.Person, Icons.Outlined.Person),
 )
 
@@ -180,7 +180,13 @@ private fun MainNavGraph(navController: NavHostController, modifier: Modifier = 
         startDestination = MainRoutes.DASHBOARD,
         modifier = modifier,
     ) {
-        composable(MainRoutes.DASHBOARD) { DashboardScreen() }
+        composable(MainRoutes.DASHBOARD) {
+            DashboardScreen(
+                onAddClient = { navController.navigate(MainRoutes.CLIENT_ADD) },
+                onAddSession = { navController.navigate(MainRoutes.CALENDAR) },
+                onOpenFinance = { navController.navigate(MainRoutes.FINANCE) },
+            )
+        }
         composable(MainRoutes.CALENDAR) { CalendarScreen() }
         composable(MainRoutes.CLIENTS) { entry ->
             val refreshRequested by entry.savedStateHandle
@@ -193,7 +199,9 @@ private fun MainNavGraph(navController: NavHostController, modifier: Modifier = 
                 onRefreshConsumed = { entry.savedStateHandle["refresh_clients"] = false },
             )
         }
-        composable(MainRoutes.FINANCE) { FinanceScreen() }
+        composable(MainRoutes.FINANCE) {
+            FinanceScreen(onBack = { navController.popBackStack() })
+        }
         composable(MainRoutes.PROFILE) {
             ProfileScreen(onOpenTeam = { navController.navigate(MainRoutes.TEAM) })
         }

@@ -12,11 +12,12 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.safeDrawingPadding
 import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.text.KeyboardActions
-import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Email
+import androidx.compose.material.icons.filled.Lock
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
@@ -28,13 +29,13 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
-import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.kutluhangul.liftgenius.R
+import com.kutluhangul.liftgenius.ui.components.GlassCard
 import com.kutluhangul.liftgenius.ui.components.GradientButton
+import com.kutluhangul.liftgenius.ui.components.IconField
 import com.kutluhangul.liftgenius.ui.components.OrDivider
 import com.kutluhangul.liftgenius.ui.components.ambientGlow
 import com.kutluhangul.liftgenius.ui.theme.Spacing
@@ -66,63 +67,46 @@ fun LoginScreen(
                 .padding(Spacing.xxl),
             horizontalAlignment = Alignment.CenterHorizontally,
         ) {
-            Text(
-                text = stringResource(R.string.login_title),
-                style = MaterialTheme.typography.headlineSmall,
+            AuthHeader(
+                title = stringResource(R.string.login_title),
+                subtitle = stringResource(R.string.login_subtitle),
             )
-            Spacer(Modifier.height(Spacing.sm))
-            Text(
-                text = stringResource(R.string.login_subtitle),
-                style = MaterialTheme.typography.bodyMedium,
-                color = MaterialTheme.extended.textSecondary,
-            )
-            Spacer(Modifier.height(Spacing.xxxl))
-            OutlinedTextField(
-                value = email,
-                onValueChange = {
-                    email = it
-                    viewModel.clearError()
-                },
-                label = { Text(stringResource(R.string.label_email)) },
-                singleLine = true,
-                keyboardOptions = KeyboardOptions(
+            Spacer(Modifier.height(Spacing.xl))
+            GlassCard(modifier = Modifier.fillMaxWidth()) {
+                IconField(
+                    icon = Icons.Filled.Email,
+                    placeholder = stringResource(R.string.label_email),
+                    value = email,
+                    onValueChange = { email = it; viewModel.clearError() },
                     keyboardType = KeyboardType.Email,
-                    imeAction = ImeAction.Next,
-                ),
-                modifier = Modifier.fillMaxWidth(),
-            )
-            Spacer(Modifier.height(Spacing.lg))
-            OutlinedTextField(
-                value = password,
-                onValueChange = {
-                    password = it
-                    viewModel.clearError()
-                },
-                label = { Text(stringResource(R.string.label_password)) },
-                singleLine = true,
-                visualTransformation = PasswordVisualTransformation(),
-                keyboardOptions = KeyboardOptions(
+                    modifier = Modifier.fillMaxWidth(),
+                )
+                HorizontalDivider(color = MaterialTheme.extended.ledgerDivider)
+                IconField(
+                    icon = Icons.Filled.Lock,
+                    placeholder = stringResource(R.string.label_password),
+                    value = password,
+                    onValueChange = { password = it; viewModel.clearError() },
                     keyboardType = KeyboardType.Password,
-                    imeAction = ImeAction.Done,
-                ),
-                keyboardActions = KeyboardActions(onDone = { viewModel.login(email, password) }),
-                modifier = Modifier.fillMaxWidth(),
-            )
-            uiState.errorMessage?.let { message ->
+                    isPassword = true,
+                    modifier = Modifier.fillMaxWidth(),
+                )
+                uiState.errorMessage?.let { message ->
+                    Spacer(Modifier.height(Spacing.sm))
+                    Text(
+                        text = message,
+                        style = MaterialTheme.typography.bodySmall,
+                        color = MaterialTheme.colorScheme.error,
+                    )
+                }
                 Spacer(Modifier.height(Spacing.lg))
-                Text(
-                    text = message,
-                    style = MaterialTheme.typography.bodySmall,
-                    color = MaterialTheme.colorScheme.error,
+                GradientButton(
+                    text = stringResource(R.string.action_login),
+                    onClick = { viewModel.login(email, password) },
+                    loading = uiState.isLoading,
+                    modifier = Modifier.fillMaxWidth(),
                 )
             }
-            Spacer(Modifier.height(Spacing.xxl))
-            GradientButton(
-                text = stringResource(R.string.action_login),
-                onClick = { viewModel.login(email, password) },
-                loading = uiState.isLoading,
-                modifier = Modifier.fillMaxWidth(),
-            )
             Spacer(Modifier.height(Spacing.xl))
             OrDivider(modifier = Modifier.fillMaxWidth())
             Spacer(Modifier.height(Spacing.xl))

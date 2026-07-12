@@ -26,6 +26,8 @@ data class ExtendedColors(
     val glassSpecular: Color,
     val ledgerDivider: Color,
     val brandGradient: Brush,
+    val ambientTop: Color,
+    val ambientBottom: Color,
 )
 
 private val DarkExtendedColors = ExtendedColors(
@@ -38,6 +40,8 @@ private val DarkExtendedColors = ExtendedColors(
     glassSpecular = GlassSpecularDark,
     ledgerDivider = LedgerDividerDark,
     brandGradient = BrandGradient,
+    ambientTop = Accent.copy(alpha = 0.18f),
+    ambientBottom = AccentSecondary.copy(alpha = 0.12f),
 )
 
 private val LightExtendedColors = ExtendedColors(
@@ -50,6 +54,8 @@ private val LightExtendedColors = ExtendedColors(
     glassSpecular = GlassSpecularLight,
     ledgerDivider = LedgerDividerLight,
     brandGradient = BrandGradient,
+    ambientTop = Accent.copy(alpha = 0.12f),
+    ambientBottom = AccentSecondary.copy(alpha = 0.10f),
 )
 
 val LocalExtendedColors = staticCompositionLocalOf { DarkExtendedColors }
@@ -116,8 +122,8 @@ private val LightColorScheme = lightColorScheme(
 
 @Composable
 fun LiftGeniusTheme(
-    // Dark-first "Obsidian Glass" brand (DESIGN.md §5 note): the app defaults to dark
-    // regardless of system setting until an in-app theme preference exists.
+    // Dark-first "Obsidian Glass" brand (DESIGN.md §5). The value is driven by the user's
+    // Karanlık Mod preference (ThemePreferences); defaults to dark.
     darkTheme: Boolean = true,
     content: @Composable () -> Unit,
 ) {

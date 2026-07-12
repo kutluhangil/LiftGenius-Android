@@ -10,11 +10,14 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.SideEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalView
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.core.view.WindowCompat
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.kutluhangul.liftgenius.ui.auth.SessionViewModel
 import com.kutluhangul.liftgenius.ui.components.BrandWordmark
@@ -22,6 +25,7 @@ import com.kutluhangul.liftgenius.ui.components.ambientGlow
 import com.kutluhangul.liftgenius.ui.main.MainScreen
 import com.kutluhangul.liftgenius.ui.navigation.AuthNavHost
 import com.kutluhangul.liftgenius.ui.theme.LiftGeniusTheme
+import com.kutluhangul.liftgenius.ui.theme.ThemeViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import io.github.jan.supabase.auth.status.SessionStatus
 
@@ -29,13 +33,27 @@ import io.github.jan.supabase.auth.status.SessionStatus
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        // Dark-first theme: force dark system bars to match (see LiftGeniusTheme).
+        // Transparent bars; icon contrast is set per-theme via SideEffect below.
         enableEdgeToEdge(
-            statusBarStyle = SystemBarStyle.dark(android.graphics.Color.TRANSPARENT),
-            navigationBarStyle = SystemBarStyle.dark(android.graphics.Color.TRANSPARENT),
+            statusBarStyle = SystemBarStyle.auto(
+                android.graphics.Color.TRANSPARENT,
+                android.graphics.Color.TRANSPARENT,
+            ),
+            navigationBarStyle = SystemBarStyle.auto(
+                android.graphics.Color.TRANSPARENT,
+                android.graphics.Color.TRANSPARENT,
+            ),
         )
         setContent {
-            LiftGeniusTheme {
+            val themeViewModel: ThemeViewModel = hiltViewModel()
+            val isDarkMode by themeViewModel.isDarkMode.collectAsState()
+            LiftGeniusTheme(darkTheme = isDarkMode) {
+                val view = LocalView.current
+                SideEffect {
+                    // Match system-bar icon contrast to the active theme.
+                    WindowCompat.getInsetsController(window, view)
+                        .isAppearanceLightStatusBars = !isDarkMode
+                }
                 LiftGeniusAppRoot()
             }
         }

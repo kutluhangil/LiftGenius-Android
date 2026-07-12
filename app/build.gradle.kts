@@ -130,6 +130,11 @@ dependencies {
     implementation(libs.androidx.credentials.play.services)
     implementation(libs.googleid)
 
+    // Video playback (welcome screen) + theme preference storage
+    implementation(libs.media3.exoplayer)
+    implementation(libs.media3.ui)
+    implementation(libs.datastore.preferences)
+
     testImplementation(libs.junit)
     androidTestImplementation(platform(libs.androidx.compose.bom))
     androidTestImplementation(libs.androidx.compose.ui.test.junit4)
