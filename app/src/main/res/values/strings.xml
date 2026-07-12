@@ -122,6 +122,23 @@
     <!-- Profile -->
     <string name="profile_salon">Salon</string>
     <string name="profile_role">Rol</string>
+    <string name="profile_account">HESAP</string>
+    <string name="profile_preferences">TERCİHLER</string>
+    <string name="profile_other">DİĞER</string>
+    <string name="profile_personal_info">Kişisel Bilgiler</string>
+    <string name="profile_business">İşletme Profili</string>
+    <string name="profile_team">Ekip &amp; Salon Yönetimi</string>
+    <string name="profile_upgrade">LiftGenius Pro\'ya Geç</string>
+    <string name="profile_language">Dil</string>
+    <string name="profile_notifications">Bildirimler</string>
+    <string name="profile_dark_mode">Karanlık Mod</string>
+    <string name="profile_feedback">Geri Bildirim</string>
+    <string name="profile_help">Yardım ve Destek</string>
+    <string name="profile_privacy">Gizlilik Politikası</string>
+    <string name="profile_version">LiftGenius v1.0.0</string>
+    <string name="profile_copyright">© 2026 FitCRM</string>
+    <string name="lang_turkish">Türkçe</string>
+    <string name="role_owner_salon">Salon Sahibi (%1$s)</string>
 
     <!-- Common actions -->
     <string name="action_ok">Tamam</string>
@@ -216,10 +233,16 @@
     <string name="session_delete_body">Bu seans kaydı kalıcı olarak silinecek.</string>
 
     <!-- Team management -->
-    <string name="team_title">Takım</string>
+    <string name="team_title">Ekip &amp; Salon</string>
     <string name="team_manage">Takımı Yönet</string>
     <string name="team_empty">Takımda başka eğitmen yok.</string>
     <string name="team_you">Sen</string>
+    <string name="team_salon_overview">Salon Genel Özeti</string>
+    <string name="team_default_salon">Fitness Salonu</string>
+    <string name="team_clients">Müşteriler</string>
+    <string name="team_sessions">Seanslar</string>
+    <string name="team_revenue">Ciro (Aylık)</string>
+    <string name="team_trainers">Salon Antrenörleri</string>
 
     <!-- PDF export -->
     <string name="action_export_pdf">PDF olarak paylaş</string>
@@ -232,4 +255,74 @@
 
     <!-- Widget -->
     <string name="widget_tagline">Danışanlarını yönet</string>
+
+    <!-- Common -->
+    <string name="action_close">Kapat</string>
+
+    <!-- Edit profile -->
+    <string name="edit_profile_title">Profili Düzenle</string>
+    <string name="label_specialty">Uzmanlık Alanı</string>
+    <string name="specialty_placeholder">Örn. Kuvvet antrenörü, beslenme koçu</string>
+    <string name="label_business_name">İşletme Adı</string>
+    <string name="business_name_placeholder">Örn. GYM Squad</string>
+    <string name="label_business_phone">İşletme Telefonu</string>
+    <string name="business_phone_placeholder">Örn. 0212 000 00 00</string>
+
+    <!-- Pro paywall -->
+    <string name="pro_title">LiftGenius Pro</string>
+    <string name="pro_coming_soon">ÇOK YAKINDA</string>
+    <string name="pro_headline">Salonunu sınırsız yönet</string>
+    <string name="pro_price">₺199/ay</string>
+    <string name="pro_free">FREE</string>
+    <string name="pro_pro">PRO</string>
+    <string name="pro_feature_clients">Müşteri limiti</string>
+    <string name="pro_free_clients">30</string>
+    <string name="pro_pro_clients">Sınırsız</string>
+    <string name="pro_feature_ai">AI antrenman &amp; beslenme</string>
+    <string name="pro_feature_programs">Program &amp; beslenme yönetimi</string>
+    <string name="pro_feature_pdf">PDF program export</string>
+    <string name="pro_feature_reminders">Ödeme hatırlatmaları</string>
+    <string name="pro_feature_reports">Finans raporları</string>
+    <string name="pro_cta">Çok Yakında</string>
+    <string name="pro_note">Satın alma çok yakında. Şu an tüm hesaplar Free olarak açılır.</string>
+
+    <!-- Feedback -->
+    <string name="feedback_title">Geri Bildirim</string>
+    <string name="feedback_desc">Uygulamayı sürekli geliştiriyoruz. Hatalı, eksik veya geliştirilmesi gerektiğini düşündüğünüz her şeyi bize yazın — en kısa sürede halledelim.</string>
+    <string name="feedback_message_label">MESAJINIZ</string>
+    <string name="feedback_placeholder">Neyi geliştirmemizi istersiniz?</string>
+    <string name="feedback_send">E-posta Gönder</string>
+    <string name="support_email">kutluhanngul@gmail.com</string>
+
+    <!-- Help -->
+    <string name="help_title">Yardım ve Destek</string>
+    <string name="help_headline">Size nasıl yardımcı olabiliriz?</string>
+    <string name="help_desc">Sık sorulan sorulara göz atın ya da doğrudan bize yazın; en kısa sürede dönüş yapalım.</string>
+    <string name="help_faq">SIK SORULAN SORULAR</string>
+    <string name="help_still">HÂLÂ YARDIM LAZIM MI?</string>
+    <string name="help_email_support">E-posta ile Destek Al</string>
+    <string name="faq_q1">Nasıl müşteri eklerim?</string>
+    <string name="faq_a1">Müşteriler sekmesindeki + butonuna dokun, temel bilgileri gir ve kaydet.</string>
+    <string name="faq_q2">Paket ve seansları nasıl takip ederim?</string>
+    <string name="faq_a2">Müşteri detayında paket ekleyebilir, Takvim sekmesinden seans planlayabilirsin.</string>
+    <string name="faq_q3">Ödemeleri nasıl işaretlerim?</string>
+    <string name="faq_a3">Paket eklerken veya düzenlerken \"Ödendi\" anahtarını aç.</string>
+    <string name="faq_q4">Uygulama dilini nasıl değiştiririm?</string>
+    <string name="faq_a4">Şu an yalnızca Türkçe destekleniyor; ek diller yolda.</string>
+    <string name="faq_q5">Verilerim güvende mi?</string>
+    <string name="faq_a5">Veriler şifreli bağlantı üzerinden iletilir ve hesabına özel olarak saklanır.</string>
+
+    <!-- Privacy -->
+    <string name="privacy_title">Gizlilik Politikası</string>
+    <string name="privacy_intro">Gizliliğiniz bizim için önemli. Aşağıda hangi verileri neden topladığımızı özetliyoruz.</string>
+    <string name="privacy_s1_title">Topladığımız Veriler</string>
+    <string name="privacy_s1_body">Hesabınızı oluşturmak için e-posta adresiniz ve adınız; uygulamayı kullanırken girdiğiniz müşteri kayıtları (isim, telefon, ölçümler, seans ve ödeme bilgileri) toplanır. Bu veriler yalnızca uygulamanın çalışması için kullanılır.</string>
+    <string name="privacy_s2_title">Verilerin Kullanımı</string>
+    <string name="privacy_s2_body">Verileriniz size özel hesabınıza bağlıdır ve yalnızca müşteri yönetimi işlevlerini sunmak için işlenir. Reklam veya pazarlama amacıyla kullanılmaz.</string>
+    <string name="privacy_s3_title">Paylaşım ve Takip</string>
+    <string name="privacy_s3_body">Verileriniz reklam ağlarıyla veya üçüncü taraflarla pazarlama amacıyla paylaşılmaz. Uygulamada reklam takibi (tracking) yoktur.</string>
+    <string name="privacy_s4_title">Güvenlik</string>
+    <string name="privacy_s4_body">Veriler şifreli bağlantılar üzerinden iletilir ve hesabınıza erişim kimlik doğrulama ile korunur.</string>
+    <string name="privacy_s5_title">Haklarınız</string>
+    <string name="privacy_s5_body">Hesabınıza ait tüm verilerin silinmesini talep edebilirsiniz. Bunun için Yardım ve Destek üzerinden bize e-posta gönderin.</string>
 </resources>

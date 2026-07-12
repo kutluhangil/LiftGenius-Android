@@ -20,12 +20,21 @@ class ThemePreferences @Inject constructor(
     @param:ApplicationContext private val context: Context,
 ) {
     private val darkModeKey = booleanPreferencesKey("dark_mode")
+    private val notificationsKey = booleanPreferencesKey("notifications_enabled")
 
     val isDarkMode: Flow<Boolean> = context.settingsDataStore.data.map { prefs ->
         prefs[darkModeKey] ?: true
     }
 
+    val notificationsEnabled: Flow<Boolean> = context.settingsDataStore.data.map { prefs ->
+        prefs[notificationsKey] ?: false
+    }
+
     suspend fun setDarkMode(enabled: Boolean) {
         context.settingsDataStore.edit { it[darkModeKey] = enabled }
+    }
+
+    suspend fun setNotifications(enabled: Boolean) {
+        context.settingsDataStore.edit { it[notificationsKey] = enabled }
     }
 }

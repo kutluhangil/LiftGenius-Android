@@ -52,6 +52,11 @@ import com.kutluhangul.liftgenius.ui.dashboard.DashboardScreen
 import com.kutluhangul.liftgenius.ui.finance.FinanceScreen
 import com.kutluhangul.liftgenius.ui.plans.NutritionPlanScreen
 import com.kutluhangul.liftgenius.ui.plans.WorkoutPlanScreen
+import com.kutluhangul.liftgenius.ui.profile.EditProfileScreen
+import com.kutluhangul.liftgenius.ui.profile.FeedbackScreen
+import com.kutluhangul.liftgenius.ui.profile.HelpScreen
+import com.kutluhangul.liftgenius.ui.profile.PrivacyScreen
+import com.kutluhangul.liftgenius.ui.profile.ProScreen
 import com.kutluhangul.liftgenius.ui.profile.ProfileScreen
 import com.kutluhangul.liftgenius.ui.team.TeamScreen
 
@@ -69,6 +74,11 @@ object MainRoutes {
     const val WORKOUT_PLAN = "workout_plan/{planId}"
     const val NUTRITION_PLAN = "nutrition_plan/{planId}"
     const val TEAM = "team"
+    const val EDIT_PROFILE = "edit_profile"
+    const val PRO = "pro"
+    const val FEEDBACK = "feedback"
+    const val HELP = "help"
+    const val PRIVACY = "privacy"
 
     fun clientDetail(clientId: String) = "client/$clientId"
     fun clientEdit(clientId: String) = "client_edit/$clientId"
@@ -203,11 +213,28 @@ private fun MainNavGraph(navController: NavHostController, modifier: Modifier = 
             FinanceScreen(onBack = { navController.popBackStack() })
         }
         composable(MainRoutes.PROFILE) {
-            ProfileScreen(onOpenTeam = { navController.navigate(MainRoutes.TEAM) })
+            ProfileScreen(
+                onEditProfile = { navController.navigate(MainRoutes.EDIT_PROFILE) },
+                onOpenTeam = { navController.navigate(MainRoutes.TEAM) },
+                onOpenPro = { navController.navigate(MainRoutes.PRO) },
+                onFeedback = { navController.navigate(MainRoutes.FEEDBACK) },
+                onHelp = { navController.navigate(MainRoutes.HELP) },
+                onPrivacy = { navController.navigate(MainRoutes.PRIVACY) },
+            )
         }
         composable(MainRoutes.TEAM) {
             TeamScreen(onBack = { navController.popBackStack() })
         }
+        composable(MainRoutes.EDIT_PROFILE) {
+            EditProfileScreen(
+                onClose = { navController.popBackStack() },
+                onSaved = { navController.popBackStack() },
+            )
+        }
+        composable(MainRoutes.PRO) { ProScreen(onClose = { navController.popBackStack() }) }
+        composable(MainRoutes.FEEDBACK) { FeedbackScreen(onClose = { navController.popBackStack() }) }
+        composable(MainRoutes.HELP) { HelpScreen(onClose = { navController.popBackStack() }) }
+        composable(MainRoutes.PRIVACY) { PrivacyScreen(onClose = { navController.popBackStack() }) }
         composable(MainRoutes.CLIENT_DETAIL) { entry ->
             val clientId = entry.arguments?.getString("clientId").orEmpty()
             val refreshRequested by entry.savedStateHandle

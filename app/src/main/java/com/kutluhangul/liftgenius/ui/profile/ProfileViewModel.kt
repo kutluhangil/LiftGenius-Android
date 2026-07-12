@@ -2,14 +2,17 @@ package com.kutluhangul.liftgenius.ui.profile
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.kutluhangul.liftgenius.data.preferences.ThemePreferences
 import com.kutluhangul.liftgenius.data.repository.AuthRepository
 import com.kutluhangul.liftgenius.data.repository.BusinessRepository
 import com.kutluhangul.liftgenius.domain.model.TrainerProfile
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -18,6 +21,7 @@ import javax.inject.Inject
 class ProfileViewModel @Inject constructor(
     private val businessRepository: BusinessRepository,
     private val authRepository: AuthRepository,
+    private val themePreferences: ThemePreferences,
 ) : ViewModel() {
 
     data class UiState(
@@ -29,6 +33,13 @@ class ProfileViewModel @Inject constructor(
 
     private val _uiState = MutableStateFlow(UiState())
     val uiState: StateFlow<UiState> = _uiState.asStateFlow()
+
+    val isDarkMode: StateFlow<Boolean> = themePreferences.isDarkMode.stateIn(
+        viewModelScope, SharingStarted.Eagerly, true,
+    )
+    val notificationsEnabled: StateFlow<Boolean> = themePreferences.notificationsEnabled.stateIn(
+        viewModelScope, SharingStarted.Eagerly, false,
+    )
 
     init {
         load()
@@ -54,11 +65,18 @@ class ProfileViewModel @Inject constructor(
         }
     }
 
+    fun setDarkMode(enabled: Boolean) {
+        viewModelScope.launch { themePreferences.setDarkMode(enabled) }
+    }
+
+    fun setNotifications(enabled: Boolean) {
+        viewModelScope.launch { themePreferences.setNotifications(enabled) }
+    }
+
     fun signOut() {
         viewModelScope.launch {
             try {
                 authRepository.signOut()
-                // Navigation back to the auth flow happens reactively via sessionStatus.
             } catch (e: CancellationException) {
                 throw e
             } catch (e: Exception) {

@@ -9,12 +9,15 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
+import androidx.compose.material.icons.filled.Business
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
@@ -31,6 +34,7 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.kutluhangul.liftgenius.R
 import com.kutluhangul.liftgenius.domain.model.TrainerProfile
+import com.kutluhangul.liftgenius.ui.common.Formatters
 import com.kutluhangul.liftgenius.ui.common.label
 import com.kutluhangul.liftgenius.ui.components.EmptyState
 import com.kutluhangul.liftgenius.ui.components.ErrorState
@@ -70,20 +74,90 @@ fun TeamScreen(
                 message = uiState.error ?: stringResource(R.string.state_error_generic),
                 onRetry = viewModel::load,
             )
-            uiState.members.isEmpty() -> EmptyState(stringResource(R.string.team_empty))
             else -> LazyColumn(
                 contentPadding = PaddingValues(Spacing.lg),
                 verticalArrangement = Arrangement.spacedBy(Spacing.md),
                 modifier = Modifier.fillMaxSize(),
             ) {
-                items(uiState.members, key = { it.id }) { member ->
-                    TeamMemberRow(
-                        member = member,
-                        isCurrentUser = member.id == uiState.currentUserId,
+                item { SalonSummaryCard(uiState) }
+                item {
+                    Text(
+                        text = stringResource(R.string.team_trainers),
+                        style = MaterialTheme.typography.titleLarge,
+                        modifier = Modifier.padding(top = Spacing.sm),
                     )
+                }
+                if (uiState.members.isEmpty()) {
+                    item { EmptyState(stringResource(R.string.team_empty)) }
+                } else {
+                    items(uiState.members, key = { it.id }) { member ->
+                        TeamMemberRow(
+                            member = member,
+                            isCurrentUser = member.id == uiState.currentUserId,
+                        )
+                    }
                 }
             }
         }
+    }
+}
+
+@Composable
+private fun SalonSummaryCard(uiState: TeamViewModel.UiState) {
+    GlassCard(modifier = Modifier.fillMaxWidth()) {
+        Row(verticalAlignment = Alignment.CenterVertically) {
+            Column(Modifier.weight(1f)) {
+                Text(
+                    text = stringResource(R.string.team_salon_overview),
+                    style = MaterialTheme.typography.labelMedium,
+                    color = MaterialTheme.extended.textSecondary,
+                )
+                Spacer(Modifier.height(Spacing.xs))
+                Text(
+                    text = uiState.salonName ?: stringResource(R.string.team_default_salon),
+                    style = MaterialTheme.typography.titleLarge,
+                )
+            }
+            Icon(
+                imageVector = Icons.Filled.Business,
+                contentDescription = null,
+                tint = MaterialTheme.colorScheme.primary,
+                modifier = Modifier.size(32.dp),
+            )
+        }
+        Spacer(Modifier.height(Spacing.md))
+        HorizontalDivider(color = MaterialTheme.extended.ledgerDivider)
+        Spacer(Modifier.height(Spacing.md))
+        Row(modifier = Modifier.fillMaxWidth()) {
+            SummaryStat(uiState.clientCount.toString(), stringResource(R.string.team_clients), Modifier.weight(1f))
+            SummaryStat(uiState.monthSessions.toString(), stringResource(R.string.team_sessions), Modifier.weight(1f))
+            SummaryStat(
+                Formatters.currency(uiState.monthRevenue),
+                stringResource(R.string.team_revenue),
+                Modifier.weight(1f),
+                valueColor = MaterialTheme.extended.success,
+            )
+        }
+    }
+}
+
+@Composable
+private fun SummaryStat(
+    value: String,
+    label: String,
+    modifier: Modifier = Modifier,
+    valueColor: androidx.compose.ui.graphics.Color = MaterialTheme.colorScheme.onSurface,
+) {
+    Column(
+        modifier = modifier,
+        horizontalAlignment = Alignment.CenterHorizontally,
+    ) {
+        Text(text = value, style = MaterialTheme.typography.titleMedium, color = valueColor)
+        Text(
+            text = label,
+            style = MaterialTheme.typography.labelSmall,
+            color = MaterialTheme.extended.textTertiary,
+        )
     }
 }
 
