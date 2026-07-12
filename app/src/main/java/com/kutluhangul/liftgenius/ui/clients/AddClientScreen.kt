@@ -14,19 +14,26 @@ import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.foundation.BorderStroke
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.Email
 import androidx.compose.material.icons.filled.FitnessCenter
 import androidx.compose.material.icons.filled.Flag
 import androidx.compose.material.icons.filled.Height
 import androidx.compose.material.icons.filled.MonitorWeight
 import androidx.compose.material.icons.filled.Notes
+import androidx.compose.material.icons.filled.Opacity
 import androidx.compose.material.icons.filled.Person
 import androidx.compose.material.icons.filled.Phone
+import androidx.compose.material.icons.filled.Straighten
 import androidx.compose.material.icons.filled.Wc
+import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
@@ -36,6 +43,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
@@ -89,7 +97,7 @@ fun AddClientScreen(
                 .padding(Spacing.lg),
         ) {
             Row(verticalAlignment = Alignment.CenterVertically) {
-                TextButton(onClick = onBack) { Text(stringResource(R.string.action_cancel)) }
+                CancelPill(onClick = onBack)
             }
             Text(
                 text = stringResource(R.string.clients_add_title),
@@ -182,18 +190,18 @@ fun AddClientScreen(
                 subtitle = stringResource(R.string.client_body_measurements_hint),
             ) {
                 Row(horizontalArrangement = Arrangement.spacedBy(Spacing.md)) {
-                    MeasurementField(bodyFat, { bodyFat = it }, R.string.label_body_fat, "%", Modifier.weight(1f))
-                    MeasurementField(muscle, { muscle = it }, R.string.label_muscle_mass, "kg", Modifier.weight(1f))
+                    MeasurementField(bodyFat, { bodyFat = it }, R.string.label_body_fat, "%", Icons.Filled.Opacity, Modifier.weight(1f))
+                    MeasurementField(muscle, { muscle = it }, R.string.label_muscle_mass, "kg", Icons.Filled.FitnessCenter, Modifier.weight(1f))
                 }
                 Row(horizontalArrangement = Arrangement.spacedBy(Spacing.md)) {
-                    MeasurementField(chest, { chest = it }, R.string.label_chest, "cm", Modifier.weight(1f))
-                    MeasurementField(waist, { waist = it }, R.string.label_waist, "cm", Modifier.weight(1f))
+                    MeasurementField(chest, { chest = it }, R.string.label_chest, "cm", Icons.Filled.Straighten, Modifier.weight(1f))
+                    MeasurementField(waist, { waist = it }, R.string.label_waist, "cm", Icons.Filled.Straighten, Modifier.weight(1f))
                 }
                 Row(horizontalArrangement = Arrangement.spacedBy(Spacing.md)) {
-                    MeasurementField(armLeft, { armLeft = it }, R.string.label_arm_left, "cm", Modifier.weight(1f))
-                    MeasurementField(armRight, { armRight = it }, R.string.label_arm_right, "cm", Modifier.weight(1f))
+                    MeasurementField(armLeft, { armLeft = it }, R.string.label_arm_left, "cm", Icons.Filled.Straighten, Modifier.weight(1f))
+                    MeasurementField(armRight, { armRight = it }, R.string.label_arm_right, "cm", Icons.Filled.Straighten, Modifier.weight(1f))
                 }
-                MeasurementField(hips, { hips = it }, R.string.label_hips, "cm", Modifier.fillMaxWidth())
+                MeasurementField(hips, { hips = it }, R.string.label_hips, "cm", Icons.Filled.Straighten, Modifier.fillMaxWidth())
             }
             Spacer(Modifier.height(Spacing.lg))
 
@@ -252,10 +260,11 @@ private fun MeasurementField(
     onValueChange: (String) -> Unit,
     labelRes: Int,
     suffix: String,
+    icon: ImageVector,
     modifier: Modifier = Modifier,
 ) {
     LabeledField(
-        icon = Icons.Filled.FitnessCenter,
+        icon = icon,
         label = stringResource(labelRes),
         value = value,
         onValueChange = onValueChange,
@@ -264,4 +273,33 @@ private fun MeasurementField(
         suffix = suffix,
         modifier = modifier,
     )
+}
+
+/** Pill-shaped "İptal" button for form top bars — glass surface, close icon + label. */
+@Composable
+private fun CancelPill(onClick: () -> Unit) {
+    Surface(
+        onClick = onClick,
+        shape = CircleShape,
+        color = MaterialTheme.colorScheme.surfaceContainerLow,
+        border = BorderStroke(1.dp, MaterialTheme.extended.cardBorder),
+    ) {
+        Row(
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.spacedBy(Spacing.xs),
+            modifier = Modifier.padding(horizontal = Spacing.md, vertical = Spacing.sm),
+        ) {
+            Icon(
+                imageVector = Icons.Filled.Close,
+                contentDescription = null,
+                tint = MaterialTheme.extended.textSecondary,
+                modifier = Modifier.size(18.dp),
+            )
+            Text(
+                text = stringResource(R.string.action_cancel),
+                style = MaterialTheme.typography.labelLarge,
+                color = MaterialTheme.extended.textSecondary,
+            )
+        }
+    }
 }

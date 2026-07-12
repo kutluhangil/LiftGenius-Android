@@ -168,6 +168,7 @@ private fun GreetingHeader(trainerName: String) {
         Text(
             text = if (trainerName.isBlank()) greeting else "$greeting, $trainerName",
             style = MaterialTheme.typography.headlineLarge,
+            color = MaterialTheme.colorScheme.onBackground,
         )
     }
 }

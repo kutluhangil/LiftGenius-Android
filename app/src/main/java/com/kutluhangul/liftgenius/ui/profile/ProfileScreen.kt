@@ -38,9 +38,16 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import android.app.LocaleManager
+import android.os.Build
+import android.os.LocaleList
+import androidx.appcompat.app.AppCompatDelegate
+import androidx.core.os.LocaleListCompat
 import androidx.hilt.navigation.compose.hiltViewModel
+import java.util.Locale
 import com.kutluhangul.liftgenius.R
 import com.kutluhangul.liftgenius.domain.model.TrainerProfile
 import com.kutluhangul.liftgenius.domain.model.TrainerRole
@@ -143,13 +150,26 @@ private fun ProfileContent(
 
             SectionKicker(stringResource(R.string.profile_preferences))
             SettingsGroup {
+                val context = LocalContext.current
+                val isEnglish = Locale.getDefault().language == "en"
                 SettingsRow(
                     Icons.Filled.Language,
                     stringResource(R.string.profile_language),
                     showChevron = false,
+                    onClick = {
+                        val target = if (isEnglish) "tr" else "en"
+                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+                            context.getSystemService(LocaleManager::class.java)
+                                .applicationLocales = LocaleList.forLanguageTags(target)
+                        } else {
+                            AppCompatDelegate.setApplicationLocales(
+                                LocaleListCompat.forLanguageTags(target),
+                            )
+                        }
+                    },
                     trailing = {
                         Text(
-                            text = stringResource(R.string.lang_turkish),
+                            text = if (isEnglish) "English" else stringResource(R.string.lang_turkish),
                             style = MaterialTheme.typography.bodyMedium,
                             color = MaterialTheme.extended.textSecondary,
                         )

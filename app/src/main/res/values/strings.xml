@@ -143,7 +143,7 @@
 
     <!-- Common actions -->
     <string name="action_ok">Tamam</string>
-    <string name="action_cancel">Vazgeç</string>
+    <string name="action_cancel">İptal</string>
     <string name="action_edit">Düzenle</string>
     <string name="action_delete">Sil</string>
     <string name="action_add">Ekle</string>
@@ -309,7 +309,7 @@
     <string name="faq_q3">Ödemeleri nasıl işaretlerim?</string>
     <string name="faq_a3">Paket eklerken veya düzenlerken \"Ödendi\" anahtarını aç.</string>
     <string name="faq_q4">Uygulama dilini nasıl değiştiririm?</string>
-    <string name="faq_a4">Şu an yalnızca Türkçe destekleniyor; ek diller yolda.</string>
+    <string name="faq_a4">Profil sekmesindeki Dil satırına dokunarak Türkçe ve İngilizce arasında geçiş yapabilirsin.</string>
     <string name="faq_q5">Verilerim güvende mi?</string>
     <string name="faq_a5">Veriler şifreli bağlantı üzerinden iletilir ve hesabına özel olarak saklanır.</string>
 

@@ -1,0 +1,329 @@
+<resources>
+    <string name="app_name">LiftGenius</string>
+    <string name="brand_kicker">PERSONAL TRAINER CRM</string>
+    <string name="welcome_tagline">Run your training business from one screen</string>
+    <string name="action_start">Get Started</string>
+    <string name="prompt_have_account_short">I already have an account</string>
+
+    <!-- Auth -->
+    <string name="action_login">Log In</string>
+    <string name="action_register">Sign Up</string>
+    <string name="label_full_name">Full Name</string>
+    <string name="label_email">Email</string>
+    <string name="label_password">Password</string>
+    <string name="login_title">Welcome back</string>
+    <string name="login_subtitle">Sign in with your account and pick up where you left off.</string>
+    <string name="register_title">Create an account</string>
+    <string name="register_subtitle">Manage your gym and clients in one place.</string>
+    <string name="prompt_no_account">No account? Sign up</string>
+    <string name="prompt_have_account">Already have an account? Log in</string>
+    <string name="confirm_email_title">Check your email</string>
+    <string name="confirm_email_body">Registration successful. Once you tap the confirmation link sent to your email address, you can log in.</string>
+    <string name="action_back_to_login">Back to login</string>
+    <string name="action_sign_out">Sign Out</string>
+    <string name="auth_or">or</string>
+    <string name="google_continue">Continue with Google</string>
+    <string name="google_not_configured">Google sign-in is not configured.</string>
+    <string name="google_failed">Google sign-in failed.</string>
+
+    <!-- Tabs -->
+    <string name="tab_dashboard">Dashboard</string>
+    <string name="tab_calendar">Calendar</string>
+    <string name="tab_clients">Clients</string>
+    <string name="tab_finance">Finance</string>
+    <string name="tab_profile">Profile</string>
+
+    <!-- Shared states -->
+    <string name="action_retry">Try Again</string>
+    <string name="action_save">Save</string>
+    <string name="action_back">Back</string>
+    <string name="state_error_generic">Something went wrong.</string>
+
+    <!-- Dashboard -->
+    <string name="dashboard_kicker">OVERVIEW</string>
+    <string name="dashboard_performance">PERFORMANCE</string>
+    <string name="dashboard_active_clients">Active Clients</string>
+    <string name="dashboard_today_sessions">Today\'s Sessions</string>
+    <string name="dashboard_finished_packages">Finished Packages</string>
+    <string name="dashboard_overdue">Overdue Payment</string>
+    <string name="dashboard_month_revenue_kicker">THIS MONTH\'S REVENUE</string>
+    <string name="dashboard_today_title">TODAY\'S SESSIONS</string>
+    <string name="dashboard_session_count">%1$d sessions</string>
+    <string name="dashboard_weekly_intensity">Weekly Session Load</string>
+    <string name="dashboard_weekly_empty">No sessions yet this week</string>
+    <string name="dashboard_weekly_subtitle">This week\'s daily session distribution</string>
+    <string name="dashboard_monthly_trend">Monthly Revenue Trend</string>
+    <string name="dashboard_monthly_subtitle">Total fees earned over the last 4 months</string>
+    <string name="dashboard_rest_day">No sessions today — rest day!</string>
+    <string name="dashboard_action_new_client">New Client</string>
+    <string name="dashboard_action_add_session">Add Session</string>
+    <string name="greeting_morning">Good morning</string>
+    <string name="greeting_afternoon">Good afternoon</string>
+    <string name="greeting_evening">Good evening</string>
+
+    <!-- Clients -->
+    <string name="clients_search_hint">Search name, phone or email…</string>
+    <string name="clients_empty">No clients yet</string>
+    <string name="clients_empty_subtitle">Get started by adding your first client</string>
+    <string name="clients_add_button">Add Client</string>
+    <string name="clients_add_title">Add New Client</string>
+    <string name="add_client_subtitle">Set your client\'s basic info and physical goals.</string>
+    <string name="client_personal_info">Personal Info</string>
+    <string name="client_physical_goals">Physical Goals</string>
+    <string name="client_body_measurements">Body Measurements (Optional)</string>
+    <string name="client_body_measurements_hint">Starting measurements are saved as the first progress record; you can then track progress on the chart.</string>
+    <string name="client_save">Save Client</string>
+    <string name="label_gender">Gender</string>
+    <string name="label_phone">Phone</string>
+    <string name="label_goal">Goal</string>
+    <string name="label_notes">Notes</string>
+    <string name="label_weight">Weight</string>
+    <string name="label_height">Height</string>
+    <string name="error_name_required">Full name is required.</string>
+    <string name="client_detail_contact">Contact</string>
+    <string name="client_detail_packages">Packages</string>
+    <string name="client_detail_progress">Latest Measurement</string>
+    <string name="client_detail_prs">Records (PR)</string>
+    <string name="detail_empty_packages">No package records.</string>
+    <string name="detail_empty_progress">No measurement records.</string>
+    <string name="detail_empty_prs">No PR records.</string>
+    <string name="sessions_remaining">%1$d / %2$d sessions left</string>
+
+    <!-- Calendar -->
+    <string name="calendar_empty_title">No Sessions</string>
+    <string name="calendar_empty">No sessions are scheduled for this date.</string>
+
+    <!-- Finance -->
+    <string name="finance_total_paid">Collected</string>
+    <string name="finance_total_unpaid">Pending</string>
+    <string name="finance_packages">Packages</string>
+    <string name="finance_empty">No package records.</string>
+    <string name="finance_paid">Paid</string>
+    <string name="finance_unpaid">Unpaid</string>
+
+    <!-- Finance &amp; Analysis -->
+    <string name="finance_analysis_title">Finance &amp; Analysis</string>
+    <string name="finance_collected_total">COLLECTED — TOTAL</string>
+    <string name="finance_paid_pending">%1$d paid · %2$d pending</string>
+    <string name="finance_collection_rate">collection</string>
+    <string name="finance_collected">Collected</string>
+    <string name="finance_pending">Pending</string>
+    <string name="finance_total_revenue">TOTAL REVENUE</string>
+    <string name="finance_avg_package">AVG. PACKAGE</string>
+    <string name="finance_active_package">ACTIVE PACKAGE</string>
+    <string name="finance_goal_streak">GOAL &amp; STREAK</string>
+    <string name="finance_month_streak">month streak</string>
+    <string name="finance_income">Income</string>
+    <string name="finance_sessions">Sessions</string>
+    <string name="finance_six_month">6-MONTH REVENUE</string>
+    <string name="finance_six_month_subtitle">Monthly collected amounts</string>
+    <string name="finance_pending_collections">PENDING COLLECTIONS</string>
+    <string name="finance_all_collected">All payments collected!</string>
+
+    <!-- Profile -->
+    <string name="profile_salon">Gym</string>
+    <string name="profile_role">Role</string>
+    <string name="profile_account">ACCOUNT</string>
+    <string name="profile_preferences">PREFERENCES</string>
+    <string name="profile_other">OTHER</string>
+    <string name="profile_personal_info">Personal Info</string>
+    <string name="profile_business">Business Profile</string>
+    <string name="profile_team">Team &amp; Gym Management</string>
+    <string name="profile_upgrade">Upgrade to LiftGenius Pro</string>
+    <string name="profile_language">Language</string>
+    <string name="profile_notifications">Notifications</string>
+    <string name="profile_dark_mode">Dark Mode</string>
+    <string name="profile_feedback">Feedback</string>
+    <string name="profile_help">Help &amp; Support</string>
+    <string name="profile_privacy">Privacy Policy</string>
+    <string name="profile_version">LiftGenius v1.0.0</string>
+    <string name="profile_copyright">© 2026 FitCRM</string>
+    <string name="lang_turkish">Türkçe</string>
+    <string name="role_owner_salon">Gym Owner (%1$s)</string>
+
+    <!-- Common actions -->
+    <string name="action_ok">OK</string>
+    <string name="action_cancel">Cancel</string>
+    <string name="action_edit">Edit</string>
+    <string name="action_delete">Delete</string>
+    <string name="action_add">Add</string>
+
+    <!-- Client edit/delete -->
+    <string name="client_edit_title">Edit Client</string>
+    <string name="label_status">Status</string>
+    <string name="delete_client_title">Delete client?</string>
+    <string name="delete_client_body">This action cannot be undone. Records tied to this client may be affected.</string>
+
+    <!-- Add session -->
+    <string name="add_session_title">New Session</string>
+    <string name="session_details">Session Details</string>
+    <string name="label_client">Client</string>
+    <string name="label_date_time">Date &amp; Time</string>
+    <string name="label_date">Date</string>
+    <string name="label_time">Time</string>
+    <string name="label_duration">Duration (minutes)</string>
+    <string name="label_title">Title</string>
+    <string name="session_focus">Training Focus</string>
+    <string name="session_intensity">Intensity</string>
+    <string name="session_title_placeholder">e.g. Chest + Triceps</string>
+    <string name="session_client_hint">You need to add a client first.</string>
+    <string name="intensity_low">Low</string>
+    <string name="intensity_mid">Medium</string>
+    <string name="intensity_high">High</string>
+    <string name="error_client_required">Select a client.</string>
+
+    <!-- Add package -->
+    <string name="add_package_title">New Package</string>
+    <string name="label_package_name">Package Name</string>
+    <string name="label_total_sessions">Total Sessions</string>
+    <string name="label_price">Price</string>
+    <string name="label_payment_method">Payment Method</string>
+    <string name="label_is_paid">Paid</string>
+    <string name="error_package_fields">Package name, session count and price are required.</string>
+
+    <!-- Add progress -->
+    <string name="add_progress_title">New Measurement</string>
+    <string name="label_body_fat">Body Fat (%)</string>
+    <string name="label_muscle_mass">Muscle (kg)</string>
+    <string name="label_chest">Chest (cm)</string>
+    <string name="label_arm_left">Left Arm (cm)</string>
+    <string name="label_arm_right">Right Arm (cm)</string>
+    <string name="label_waist">Waist (cm)</string>
+    <string name="label_hips">Hips (cm)</string>
+    <string name="error_progress_fields">Enter at least one measurement value.</string>
+
+    <!-- Add PR -->
+    <string name="add_pr_title">New PR</string>
+    <string name="label_exercise">Exercise</string>
+    <string name="label_pr_weight">Weight (kg)</string>
+    <string name="label_reps">Reps</string>
+    <string name="error_pr_fields">Exercise, weight and reps are required.</string>
+
+    <!-- Plans on client detail -->
+    <string name="client_detail_workout_plans">Workout Programs</string>
+    <string name="client_detail_nutrition_plans">Nutrition Plans</string>
+    <string name="detail_empty_workout">No programs.</string>
+    <string name="detail_empty_nutrition">No nutrition plans.</string>
+    <string name="action_generate_ai">Generate with AI</string>
+
+    <!-- AI generation -->
+    <string name="ai_workout_title">AI Workout Program</string>
+    <string name="ai_nutrition_title">AI Nutrition Plan</string>
+    <string name="ai_generate">Generate</string>
+    <string name="ai_regenerate">Regenerate</string>
+    <string name="ai_days_per_week">Days per Week</string>
+    <string name="ai_level">Level</string>
+    <string name="level_beginner">Beginner</string>
+    <string name="level_intermediate">Intermediate</string>
+    <string name="level_advanced">Advanced</string>
+    <string name="ai_equipment">Equipment</string>
+    <string name="ai_preferences">Preferences / Notes</string>
+    <string name="ai_target_calories">Target Calories (empty = let AI decide)</string>
+    <string name="ai_meals_per_day">Meals per Day</string>
+
+    <!-- Nutrition display -->
+    <string name="label_calories">Calories</string>
+    <string name="label_protein">Protein (g)</string>
+    <string name="label_carbs">Carbs (g)</string>
+    <string name="label_fat">Fat (g)</string>
+    <string name="meal_plan">Meal Plan</string>
+
+    <!-- Session actions -->
+    <string name="session_status_title">Session Status</string>
+    <string name="session_delete_title">Delete session?</string>
+    <string name="session_delete_body">This session record will be permanently deleted.</string>
+
+    <!-- Team management -->
+    <string name="team_title">Team &amp; Gym</string>
+    <string name="team_manage">Manage Team</string>
+    <string name="team_empty">No other trainers on the team.</string>
+    <string name="team_you">You</string>
+    <string name="team_salon_overview">Gym Overview</string>
+    <string name="team_default_salon">Fitness Gym</string>
+    <string name="team_clients">Clients</string>
+    <string name="team_sessions">Sessions</string>
+    <string name="team_revenue">Revenue (Monthly)</string>
+    <string name="team_trainers">Gym Trainers</string>
+
+    <!-- PDF export -->
+    <string name="action_export_pdf">Share as PDF</string>
+    <string name="pdf_share_chooser">Share PDF</string>
+    <string name="pdf_export_failed">Could not create PDF: %1$s</string>
+    <string name="pdf_workout_heading">Workout Program</string>
+    <string name="pdf_nutrition_heading">Nutrition Plan</string>
+    <string name="pdf_finance_heading">Finance Summary</string>
+    <string name="pdf_generated_on">Generated: %1$s</string>
+
+    <!-- Widget -->
+    <string name="widget_tagline">Manage your clients</string>
+
+    <!-- Common -->
+    <string name="action_close">Close</string>
+
+    <!-- Edit profile -->
+    <string name="edit_profile_title">Edit Profile</string>
+    <string name="label_specialty">Specialty</string>
+    <string name="specialty_placeholder">e.g. Strength coach, nutrition coach</string>
+    <string name="label_business_name">Business Name</string>
+    <string name="business_name_placeholder">e.g. GYM Squad</string>
+    <string name="label_business_phone">Business Phone</string>
+    <string name="business_phone_placeholder">e.g. 0212 000 00 00</string>
+
+    <!-- Pro paywall -->
+    <string name="pro_title">LiftGenius Pro</string>
+    <string name="pro_coming_soon">COMING SOON</string>
+    <string name="pro_headline">Manage your gym without limits</string>
+    <string name="pro_price">₺199/mo</string>
+    <string name="pro_free">FREE</string>
+    <string name="pro_pro">PRO</string>
+    <string name="pro_feature_clients">Client limit</string>
+    <string name="pro_free_clients">30</string>
+    <string name="pro_pro_clients">Unlimited</string>
+    <string name="pro_feature_ai">AI workout &amp; nutrition</string>
+    <string name="pro_feature_programs">Program &amp; nutrition management</string>
+    <string name="pro_feature_pdf">PDF program export</string>
+    <string name="pro_feature_reminders">Payment reminders</string>
+    <string name="pro_feature_reports">Finance reports</string>
+    <string name="pro_cta">Coming Soon</string>
+    <string name="pro_note">Purchases are coming soon. For now all accounts start as Free.</string>
+
+    <!-- Feedback -->
+    <string name="feedback_title">Feedback</string>
+    <string name="feedback_desc">We keep improving the app. Tell us anything that\'s broken, missing, or could be better — we\'ll get on it as soon as we can.</string>
+    <string name="feedback_message_label">YOUR MESSAGE</string>
+    <string name="feedback_placeholder">What would you like us to improve?</string>
+    <string name="feedback_send">Send Email</string>
+    <string name="support_email">kutluhanngul@gmail.com</string>
+
+    <!-- Help -->
+    <string name="help_title">Help &amp; Support</string>
+    <string name="help_headline">How can we help you?</string>
+    <string name="help_desc">Browse frequently asked questions or write to us directly; we\'ll get back to you as soon as we can.</string>
+    <string name="help_faq">FREQUENTLY ASKED QUESTIONS</string>
+    <string name="help_still">STILL NEED HELP?</string>
+    <string name="help_email_support">Get Email Support</string>
+    <string name="faq_q1">How do I add a client?</string>
+    <string name="faq_a1">Tap the + button on the Clients tab, enter the basic info and save.</string>
+    <string name="faq_q2">How do I track packages and sessions?</string>
+    <string name="faq_a2">You can add packages on the client detail and schedule sessions from the Calendar tab.</string>
+    <string name="faq_q3">How do I mark payments?</string>
+    <string name="faq_a3">Turn on the \"Paid\" switch while adding or editing a package.</string>
+    <string name="faq_q4">How do I change the app language?</string>
+    <string name="faq_a4">Tap the Language row on the Profile tab to switch between Turkish and English.</string>
+    <string name="faq_q5">Is my data safe?</string>
+    <string name="faq_a5">Data is transmitted over an encrypted connection and stored privately under your account.</string>
+
+    <!-- Privacy -->
+    <string name="privacy_title">Privacy Policy</string>
+    <string name="privacy_intro">Your privacy matters to us. Below we summarize what data we collect and why.</string>
+    <string name="privacy_s1_title">Data We Collect</string>
+    <string name="privacy_s1_body">To create your account we collect your email address and name; while you use the app we store the client records you enter (name, phone, measurements, session and payment info). This data is used only to run the app.</string>
+    <string name="privacy_s2_title">Use of Data</string>
+    <string name="privacy_s2_body">Your data is tied to your private account and processed only to provide client-management features. It is not used for advertising or marketing.</string>
+    <string name="privacy_s3_title">Sharing &amp; Tracking</string>
+    <string name="privacy_s3_body">Your data is not shared with ad networks or third parties for marketing. The app contains no ad tracking.</string>
+    <string name="privacy_s4_title">Security</string>
+    <string name="privacy_s4_body">Data is transmitted over encrypted connections and access to your account is protected with authentication.</string>
+    <string name="privacy_s5_title">Your Rights</string>
+    <string name="privacy_s5_body">You can request deletion of all data belonging to your account. To do so, email us via Help &amp; Support.</string>
+</resources>

@@ -4,6 +4,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.darkColorScheme
 import androidx.compose.material3.lightColorScheme
 import androidx.compose.runtime.Composable
+import androidx.compose.material3.LocalContentColor
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.Immutable
 import androidx.compose.runtime.ReadOnlyComposable
@@ -130,11 +131,16 @@ fun LiftGeniusTheme(
     val colorScheme = if (darkTheme) DarkColorScheme else LightColorScheme
     val extendedColors = if (darkTheme) DarkExtendedColors else LightExtendedColors
 
-    CompositionLocalProvider(LocalExtendedColors provides extendedColors) {
-        MaterialTheme(
-            colorScheme = colorScheme,
-            typography = Typography,
-            shapes = Shapes,
+    MaterialTheme(
+        colorScheme = colorScheme,
+        typography = Typography,
+        shapes = Shapes,
+    ) {
+        // Default content color for text/icons drawn outside a Surface — without this the
+        // Material default is black, which vanishes on the dark background.
+        CompositionLocalProvider(
+            LocalExtendedColors provides extendedColors,
+            LocalContentColor provides colorScheme.onBackground,
             content = content,
         )
     }
