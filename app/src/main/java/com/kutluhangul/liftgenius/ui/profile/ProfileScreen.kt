@@ -22,18 +22,24 @@ import androidx.compose.material.icons.filled.Business
 import androidx.compose.material.icons.filled.CameraAlt
 import androidx.compose.material.icons.filled.ChatBubble
 import androidx.compose.material.icons.filled.DarkMode
+import androidx.compose.material.icons.filled.DeleteForever
 import androidx.compose.material.icons.filled.Groups
 import androidx.compose.material.icons.filled.Language
 import androidx.compose.material.icons.filled.Notifications
 import androidx.compose.material.icons.filled.Person
 import androidx.compose.material.icons.filled.Shield
 import androidx.compose.material.icons.filled.WorkspacePremium
+import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Switch
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -97,6 +103,7 @@ fun ProfileScreen(
             onToggleDark = viewModel::setDarkMode,
             onToggleNotifications = viewModel::setNotifications,
             onSignOut = viewModel::signOut,
+            onDeleteAccount = viewModel::deleteAccount,
         )
     }
 }
@@ -115,8 +122,10 @@ private fun ProfileContent(
     onToggleDark: (Boolean) -> Unit,
     onToggleNotifications: (Boolean) -> Unit,
     onSignOut: () -> Unit,
+    onDeleteAccount: () -> Unit,
 ) {
     val profile = uiState.profile ?: return
+    var showDeleteDialog by remember { mutableStateOf(false) }
 
     Column(
         modifier = Modifier
@@ -208,6 +217,15 @@ private fun ProfileContent(
                     showChevron = false,
                     onClick = onSignOut,
                 )
+                SettingsDivider()
+                SettingsRow(
+                    Icons.Filled.DeleteForever,
+                    stringResource(R.string.profile_delete_account),
+                    tint = MaterialTheme.colorScheme.error,
+                    titleColor = MaterialTheme.colorScheme.error,
+                    showChevron = false,
+                    onClick = { showDeleteDialog = true },
+                )
             }
             uiState.error?.let { message ->
                 Spacer(Modifier.height(Spacing.md))
@@ -230,6 +248,32 @@ private fun ProfileContent(
             )
             Spacer(Modifier.height(Spacing.xxl))
         }
+    }
+
+    if (showDeleteDialog) {
+        AlertDialog(
+            onDismissRequest = { showDeleteDialog = false },
+            title = { Text(stringResource(R.string.delete_account_title)) },
+            text = { Text(stringResource(R.string.delete_account_body)) },
+            confirmButton = {
+                TextButton(
+                    onClick = {
+                        showDeleteDialog = false
+                        onDeleteAccount()
+                    },
+                ) {
+                    Text(
+                        text = stringResource(R.string.action_delete),
+                        color = MaterialTheme.colorScheme.error,
+                    )
+                }
+            },
+            dismissButton = {
+                TextButton(onClick = { showDeleteDialog = false }) {
+                    Text(stringResource(R.string.action_cancel))
+                }
+            },
+        )
     }
 }
 

@@ -2227,6 +2227,7 @@
       </list>
     </option>
   </component>
+  <component name="ExternalStorageConfigurationManager" enabled="true" />
   <component name="ProjectInspectionProfilesVisibleTreeState">
     <entry key="Project Default">
       <profile-state>
@@ -2246,6 +2247,7 @@
       </profile-state>
     </entry>
   </component>
+  <component name="ProjectRootManager" version="2" languageLevel="JDK_21" project-jdk-name="jbr-21" project-jdk-type="JavaSDK" />
   <component name="StoredSessionsInfoStore">
     <option name="sessions">
       <list>

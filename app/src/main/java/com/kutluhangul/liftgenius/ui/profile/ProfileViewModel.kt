@@ -84,4 +84,16 @@ class ProfileViewModel @Inject constructor(
             }
         }
     }
+
+    fun deleteAccount() {
+        viewModelScope.launch {
+            try {
+                authRepository.deleteAccount()
+            } catch (e: CancellationException) {
+                throw e
+            } catch (e: Exception) {
+                _uiState.update { it.copy(error = e.message ?: "Hesap silinemedi.") }
+            }
+        }
+    }
 }

@@ -136,6 +136,9 @@
     <string name="profile_feedback">Geri Bildirim</string>
     <string name="profile_help">Yardım ve Destek</string>
     <string name="profile_privacy">Gizlilik Politikası</string>
+    <string name="profile_delete_account">Hesabı Sil</string>
+    <string name="delete_account_title">Hesabı sil?</string>
+    <string name="delete_account_body">Hesabın ve tüm verilerin (müşteriler, programlar, beslenme planları, seanslar, ölçümler ve rekorlar) kalıcı olarak silinir. Bu işlem geri alınamaz.</string>
     <string name="profile_version">LiftGenius v1.0.0</string>
     <string name="profile_copyright">© 2026 FitCRM</string>
     <string name="lang_turkish">Türkçe</string>

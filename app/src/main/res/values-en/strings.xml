@@ -136,6 +136,9 @@
     <string name="profile_feedback">Feedback</string>
     <string name="profile_help">Help &amp; Support</string>
     <string name="profile_privacy">Privacy Policy</string>
+    <string name="profile_delete_account">Delete Account</string>
+    <string name="delete_account_title">Delete account?</string>
+    <string name="delete_account_body">Your account and all your data (clients, programs, nutrition plans, sessions, measurements and records) will be permanently deleted. This action cannot be undone.</string>
     <string name="profile_version">LiftGenius v1.0.0</string>
     <string name="profile_copyright">© 2026 FitCRM</string>
     <string name="lang_turkish">Türkçe</string>

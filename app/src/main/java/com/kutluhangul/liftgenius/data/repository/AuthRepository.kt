@@ -9,6 +9,7 @@ import io.github.jan.supabase.auth.providers.builtin.Email
 import io.github.jan.supabase.auth.providers.builtin.IDToken
 import io.github.jan.supabase.auth.status.SessionStatus
 import io.github.jan.supabase.postgrest.from
+import io.github.jan.supabase.postgrest.postgrest
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
@@ -57,6 +58,23 @@ class AuthRepository @Inject constructor(
     }
 
     suspend fun signOut() {
+        supabase.auth.signOut()
+    }
+
+    /**
+     * Permanently deletes the signed-in trainer's account, then ends the session.
+     *
+     * Delegates to the `delete_user()` Postgres function (SECURITY DEFINER, scoped
+     * to auth.uid()): it removes the trainer's `clients` — cascading to all
+     * client-scoped data (client_progress, client_prs, packages, sessions,
+     * workout_plans → workout_days → exercises, nutrition_plans) — the
+     * `trainer_profiles` row, and finally the `auth.users` record itself, which is
+     * not reachable with the anon key. The local session is then cleared.
+     */
+    suspend fun deleteAccount() {
+        supabase.auth.currentUserOrNull()
+            ?: error("deleteAccount called without an authenticated user")
+        supabase.postgrest.rpc("delete_user")
         supabase.auth.signOut()
     }
 
