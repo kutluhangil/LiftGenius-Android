@@ -90,7 +90,8 @@
     <string name="sessions_remaining">%1$d / %2$d seans kaldı</string>
 
     <!-- Calendar -->
-    <string name="calendar_empty">Bu gün için seans yok.</string>
+    <string name="calendar_empty_title">Seans Yok</string>
+    <string name="calendar_empty">Bu tarih için planlanmış bir seans bulunmuyor.</string>
 
     <!-- Finance -->
     <string name="finance_total_paid">Tahsil Edilen</string>

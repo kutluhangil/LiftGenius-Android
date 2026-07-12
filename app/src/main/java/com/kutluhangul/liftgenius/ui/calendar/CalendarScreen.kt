@@ -21,6 +21,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.ChevronLeft
 import androidx.compose.material.icons.filled.ChevronRight
+import androidx.compose.material.icons.filled.EventBusy
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
@@ -45,7 +46,6 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import com.kutluhangul.liftgenius.R
 import com.kutluhangul.liftgenius.domain.model.Session
 import com.kutluhangul.liftgenius.ui.common.Formatters
-import com.kutluhangul.liftgenius.ui.components.EmptyState
 import com.kutluhangul.liftgenius.ui.components.ErrorState
 import com.kutluhangul.liftgenius.ui.components.LoadingState
 import com.kutluhangul.liftgenius.ui.components.SessionRow
@@ -126,7 +126,7 @@ fun CalendarScreen(viewModel: CalendarViewModel = hiltViewModel()) {
                 else -> {
                     val daySessions = uiState.sessionsOn(uiState.selectedDate)
                     if (daySessions.isEmpty()) {
-                        EmptyState(stringResource(R.string.calendar_empty))
+                        CalendarEmptyState()
                     } else {
                         LazyColumn(
                             contentPadding = PaddingValues(bottom = 96.dp),
@@ -209,6 +209,44 @@ fun CalendarScreen(viewModel: CalendarViewModel = hiltViewModel()) {
                     Text(stringResource(R.string.action_cancel))
                 }
             },
+        )
+    }
+}
+
+@Composable
+private fun CalendarEmptyState() {
+    Column(
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(Spacing.xxl),
+        horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.Center,
+    ) {
+        Box(
+            modifier = Modifier
+                .size(88.dp)
+                .clip(MaterialTheme.shapes.large)
+                .background(MaterialTheme.colorScheme.surfaceContainer),
+            contentAlignment = Alignment.Center,
+        ) {
+            Icon(
+                imageVector = Icons.Filled.EventBusy,
+                contentDescription = null,
+                tint = MaterialTheme.colorScheme.primary,
+                modifier = Modifier.size(40.dp),
+            )
+        }
+        Spacer(Modifier.height(Spacing.xl))
+        Text(
+            text = stringResource(R.string.calendar_empty_title),
+            style = MaterialTheme.typography.titleLarge,
+        )
+        Spacer(Modifier.height(Spacing.xs))
+        Text(
+            text = stringResource(R.string.calendar_empty),
+            style = MaterialTheme.typography.bodyMedium,
+            color = MaterialTheme.extended.textSecondary,
+            textAlign = TextAlign.Center,
         )
     }
 }
