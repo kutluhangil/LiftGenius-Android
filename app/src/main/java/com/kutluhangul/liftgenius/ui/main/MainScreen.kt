@@ -53,6 +53,7 @@ import com.kutluhangul.liftgenius.ui.finance.FinanceScreen
 import com.kutluhangul.liftgenius.ui.plans.NutritionPlanScreen
 import com.kutluhangul.liftgenius.ui.plans.WorkoutPlanScreen
 import com.kutluhangul.liftgenius.ui.profile.ProfileScreen
+import com.kutluhangul.liftgenius.ui.team.TeamScreen
 
 object MainRoutes {
     const val DASHBOARD = "dashboard"
@@ -67,6 +68,7 @@ object MainRoutes {
     const val AI_NUTRITION = "ai_nutrition/{clientId}"
     const val WORKOUT_PLAN = "workout_plan/{planId}"
     const val NUTRITION_PLAN = "nutrition_plan/{planId}"
+    const val TEAM = "team"
 
     fun clientDetail(clientId: String) = "client/$clientId"
     fun clientEdit(clientId: String) = "client_edit/$clientId"
@@ -192,7 +194,12 @@ private fun MainNavGraph(navController: NavHostController, modifier: Modifier = 
             )
         }
         composable(MainRoutes.FINANCE) { FinanceScreen() }
-        composable(MainRoutes.PROFILE) { ProfileScreen() }
+        composable(MainRoutes.PROFILE) {
+            ProfileScreen(onOpenTeam = { navController.navigate(MainRoutes.TEAM) })
+        }
+        composable(MainRoutes.TEAM) {
+            TeamScreen(onBack = { navController.popBackStack() })
+        }
         composable(MainRoutes.CLIENT_DETAIL) { entry ->
             val clientId = entry.arguments?.getString("clientId").orEmpty()
             val refreshRequested by entry.savedStateHandle

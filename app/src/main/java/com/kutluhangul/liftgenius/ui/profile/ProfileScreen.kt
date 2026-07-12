@@ -13,6 +13,7 @@ import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -34,7 +35,10 @@ import com.kutluhangul.liftgenius.ui.theme.Spacing
 import com.kutluhangul.liftgenius.ui.theme.extended
 
 @Composable
-fun ProfileScreen(viewModel: ProfileViewModel = hiltViewModel()) {
+fun ProfileScreen(
+    onOpenTeam: () -> Unit,
+    viewModel: ProfileViewModel = hiltViewModel(),
+) {
     val uiState by viewModel.uiState.collectAsState()
 
     when {
@@ -45,6 +49,7 @@ fun ProfileScreen(viewModel: ProfileViewModel = hiltViewModel()) {
         )
         else -> ProfileContent(
             uiState = uiState,
+            onOpenTeam = onOpenTeam,
             onSignOut = viewModel::signOut,
         )
     }
@@ -53,6 +58,7 @@ fun ProfileScreen(viewModel: ProfileViewModel = hiltViewModel()) {
 @Composable
 private fun ProfileContent(
     uiState: ProfileViewModel.UiState,
+    onOpenTeam: () -> Unit,
     onSignOut: () -> Unit,
 ) {
     val profile = uiState.profile ?: return
@@ -110,7 +116,21 @@ private fun ProfileContent(
                     color = MaterialTheme.colorScheme.error,
                 )
             }
-            Spacer(Modifier.height(Spacing.xxl))
+            Spacer(Modifier.height(Spacing.lg))
+            OutlinedButton(
+                onClick = onOpenTeam,
+                shape = MaterialTheme.shapes.large,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(52.dp),
+            ) {
+                Text(
+                    text = stringResource(R.string.team_manage),
+                    style = MaterialTheme.typography.labelLarge,
+                    color = MaterialTheme.colorScheme.onBackground,
+                )
+            }
+            Spacer(Modifier.height(Spacing.lg))
             GradientButton(
                 text = stringResource(R.string.action_sign_out),
                 onClick = onSignOut,

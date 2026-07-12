@@ -8,6 +8,7 @@ import com.kutluhangul.liftgenius.data.repository.ClientRepository
 import com.kutluhangul.liftgenius.data.repository.SessionRepository
 import com.kutluhangul.liftgenius.domain.model.NewSession
 import com.kutluhangul.liftgenius.domain.model.Session
+import com.kutluhangul.liftgenius.domain.model.SessionStatus
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.async
@@ -137,6 +138,36 @@ class CalendarViewModel @Inject constructor(
                 throw e
             } catch (e: Exception) {
                 _uiState.update { it.copy(isMutating = false, mutationError = e.message ?: "Seans kaydedilemedi.") }
+            }
+        }
+    }
+
+    fun updateStatus(session: Session, status: SessionStatus) {
+        viewModelScope.launch {
+            _uiState.update { it.copy(isMutating = true, mutationError = null) }
+            try {
+                sessionRepository.updateSession(session.copy(status = status))
+                _uiState.update { it.copy(isMutating = false, mutationCompleted = true) }
+                loadWeek()
+            } catch (e: CancellationException) {
+                throw e
+            } catch (e: Exception) {
+                _uiState.update { it.copy(isMutating = false, mutationError = e.message ?: "Seans güncellenemedi.") }
+            }
+        }
+    }
+
+    fun deleteSession(session: Session) {
+        viewModelScope.launch {
+            _uiState.update { it.copy(isMutating = true, mutationError = null) }
+            try {
+                sessionRepository.deleteSession(session.id)
+                _uiState.update { it.copy(isMutating = false, mutationCompleted = true) }
+                loadWeek()
+            } catch (e: CancellationException) {
+                throw e
+            } catch (e: Exception) {
+                _uiState.update { it.copy(isMutating = false, mutationError = e.message ?: "Seans silinemedi.") }
             }
         }
     }

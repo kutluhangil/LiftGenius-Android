@@ -22,14 +22,15 @@ import com.kutluhangul.liftgenius.ui.theme.Spacing
 import com.kutluhangul.liftgenius.ui.theme.extended
 import kotlin.time.ExperimentalTime
 
-/** One session in a list: client, title, time and status. */
+/** One session in a list: client, title, time and status. Tappable when onClick is set. */
 @Composable
 fun SessionRow(
     session: Session,
     clientName: String,
     modifier: Modifier = Modifier,
+    onClick: (() -> Unit)? = null,
 ) {
-    GlassCard(modifier = modifier.fillMaxWidth()) {
+    GlassCard(modifier = modifier.fillMaxWidth(), onClick = onClick) {
         Row(verticalAlignment = Alignment.CenterVertically) {
             Column(Modifier.weight(1f)) {
                 Text(

@@ -153,4 +153,15 @@
     <string name="label_carbs">Karbonhidrat (g)</string>
     <string name="label_fat">Yağ (g)</string>
     <string name="meal_plan">Öğün Planı</string>
+
+    <!-- Session actions -->
+    <string name="session_status_title">Seans Durumu</string>
+    <string name="session_delete_title">Seansı sil?</string>
+    <string name="session_delete_body">Bu seans kaydı kalıcı olarak silinecek.</string>
+
+    <!-- Team management -->
+    <string name="team_title">Takım</string>
+    <string name="team_manage">Takımı Yönet</string>
+    <string name="team_empty">Takımda başka eğitmen yok.</string>
+    <string name="team_you">Sen</string>
 </resources>

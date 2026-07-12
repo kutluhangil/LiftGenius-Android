@@ -21,11 +21,13 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.ChevronLeft
 import androidx.compose.material.icons.filled.ChevronRight
+import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
@@ -41,6 +43,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.kutluhangul.liftgenius.R
+import com.kutluhangul.liftgenius.domain.model.Session
 import com.kutluhangul.liftgenius.ui.common.Formatters
 import com.kutluhangul.liftgenius.ui.components.EmptyState
 import com.kutluhangul.liftgenius.ui.components.ErrorState
@@ -55,10 +58,13 @@ import java.time.LocalDate
 fun CalendarScreen(viewModel: CalendarViewModel = hiltViewModel()) {
     val uiState by viewModel.uiState.collectAsState()
     var showAddSheet by remember { mutableStateOf(false) }
+    var selectedSession by remember { mutableStateOf<Session?>(null) }
+    var showDeleteDialog by remember { mutableStateOf(false) }
 
     LaunchedEffect(uiState.mutationCompleted) {
         if (uiState.mutationCompleted) {
             showAddSheet = false
+            selectedSession = null
             viewModel.consumeMutation()
         }
     }
@@ -130,6 +136,10 @@ fun CalendarScreen(viewModel: CalendarViewModel = hiltViewModel()) {
                                 SessionRow(
                                     session = session,
                                     clientName = uiState.clientNames[session.clientId] ?: "—",
+                                    onClick = {
+                                        viewModel.consumeMutation()
+                                        selectedSession = session
+                                    },
                                 )
                             }
                         }
@@ -160,6 +170,45 @@ fun CalendarScreen(viewModel: CalendarViewModel = hiltViewModel()) {
             error = uiState.mutationError,
             onDismiss = { showAddSheet = false },
             onSave = viewModel::addSession,
+        )
+    }
+
+    selectedSession?.let { session ->
+        SessionActionsSheet(
+            session = session,
+            clientName = uiState.clientNames[session.clientId] ?: "—",
+            isMutating = uiState.isMutating,
+            error = uiState.mutationError,
+            onSelectStatus = { status -> viewModel.updateStatus(session, status) },
+            onDelete = { showDeleteDialog = true },
+            onDismiss = { selectedSession = null },
+        )
+    }
+
+    if (showDeleteDialog) {
+        val session = selectedSession
+        AlertDialog(
+            onDismissRequest = { showDeleteDialog = false },
+            title = { Text(stringResource(R.string.session_delete_title)) },
+            text = { Text(stringResource(R.string.session_delete_body)) },
+            confirmButton = {
+                TextButton(
+                    onClick = {
+                        showDeleteDialog = false
+                        session?.let(viewModel::deleteSession)
+                    },
+                ) {
+                    Text(
+                        text = stringResource(R.string.action_delete),
+                        color = MaterialTheme.colorScheme.error,
+                    )
+                }
+            },
+            dismissButton = {
+                TextButton(onClick = { showDeleteDialog = false }) {
+                    Text(stringResource(R.string.action_cancel))
+                }
+            },
         )
     }
 }
