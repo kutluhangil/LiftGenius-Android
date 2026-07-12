@@ -35,6 +35,7 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.kutluhangul.liftgenius.R
 import com.kutluhangul.liftgenius.ui.components.GradientButton
+import com.kutluhangul.liftgenius.ui.components.OrDivider
 import com.kutluhangul.liftgenius.ui.components.ambientGlow
 import com.kutluhangul.liftgenius.ui.theme.Spacing
 import com.kutluhangul.liftgenius.ui.theme.extended
@@ -120,6 +121,15 @@ fun LoginScreen(
                 text = stringResource(R.string.action_login),
                 onClick = { viewModel.login(email, password) },
                 loading = uiState.isLoading,
+                modifier = Modifier.fillMaxWidth(),
+            )
+            Spacer(Modifier.height(Spacing.xl))
+            OrDivider(modifier = Modifier.fillMaxWidth())
+            Spacer(Modifier.height(Spacing.xl))
+            GoogleSignInButton(
+                onToken = viewModel::loginWithGoogle,
+                onError = viewModel::showError,
+                enabled = !uiState.isLoading,
                 modifier = Modifier.fillMaxWidth(),
             )
             Spacer(Modifier.height(Spacing.md))

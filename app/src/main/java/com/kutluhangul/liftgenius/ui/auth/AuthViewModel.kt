@@ -58,6 +58,17 @@ class AuthViewModel @Inject constructor(
         }
     }
 
+    fun loginWithGoogle(idToken: String) {
+        launchAuth {
+            authRepository.signInWithGoogle(idToken)
+            // Navigation happens reactively via sessionStatus (MainActivity).
+        }
+    }
+
+    fun showError(message: String) {
+        _uiState.update { it.copy(errorMessage = message) }
+    }
+
     fun clearError() {
         if (_uiState.value.errorMessage != null) {
             _uiState.update { it.copy(errorMessage = null) }

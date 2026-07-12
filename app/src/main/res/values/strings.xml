@@ -19,6 +19,10 @@
     <string name="confirm_email_body">Kayıt başarılı. E-posta adresine gönderilen onay bağlantısına tıkladıktan sonra giriş yapabilirsin.</string>
     <string name="action_back_to_login">Giriş ekranına dön</string>
     <string name="action_sign_out">Çıkış Yap</string>
+    <string name="auth_or">veya</string>
+    <string name="google_continue">Google ile devam et</string>
+    <string name="google_not_configured">Google girişi yapılandırılmamış.</string>
+    <string name="google_failed">Google girişi başarısız.</string>
 
     <!-- Tabs -->
     <string name="tab_dashboard">Panel</string>

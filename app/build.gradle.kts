@@ -52,6 +52,12 @@ android {
         buildConfigField("String", "SUPABASE_ANON_KEY", "\"${requiredProperty("SUPABASE_ANON_KEY")}\"")
         // Optional: users can also enter the Gemini key at runtime (parity with iOS).
         buildConfigField("String", "GEMINI_API_KEY", "\"${localProperties.getProperty("GEMINI_API_KEY").orEmpty()}\"")
+        // Google Sign-In Web client ID (public). Blank disables the Google button.
+        buildConfigField(
+            "String",
+            "GOOGLE_WEB_CLIENT_ID",
+            "\"${localProperties.getProperty("GOOGLE_WEB_CLIENT_ID").orEmpty()}\"",
+        )
     }
 
     signingConfigs {
