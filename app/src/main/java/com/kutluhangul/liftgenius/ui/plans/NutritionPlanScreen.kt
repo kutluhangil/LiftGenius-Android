@@ -15,6 +15,7 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
+import androidx.compose.material.icons.filled.PictureAsPdf
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
@@ -27,11 +28,13 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.kutluhangul.liftgenius.R
+import com.kutluhangul.liftgenius.pdf.PdfExporter
 import com.kutluhangul.liftgenius.ui.common.Formatters
 import com.kutluhangul.liftgenius.ui.components.ErrorState
 import com.kutluhangul.liftgenius.ui.components.GlassCard
 import com.kutluhangul.liftgenius.ui.components.LoadingState
 import com.kutluhangul.liftgenius.ui.components.StatCard
+import com.kutluhangul.liftgenius.ui.components.rememberPdfShareLauncher
 import com.kutluhangul.liftgenius.ui.theme.Spacing
 import com.kutluhangul.liftgenius.ui.theme.extended
 import kotlin.time.ExperimentalTime
@@ -42,6 +45,7 @@ fun NutritionPlanScreen(
     viewModel: NutritionPlanViewModel = hiltViewModel(),
 ) {
     val uiState by viewModel.uiState.collectAsState()
+    val sharePdf = rememberPdfShareLauncher()
 
     Column(
         modifier = Modifier
@@ -58,7 +62,18 @@ fun NutritionPlanScreen(
             Text(
                 text = uiState.plan?.let { plan -> Formatters.fullDate(plan.createdAt) }.orEmpty(),
                 style = MaterialTheme.typography.titleMedium,
+                modifier = Modifier.weight(1f),
             )
+            uiState.plan?.let { plan ->
+                IconButton(
+                    onClick = { sharePdf { ctx -> PdfExporter.exportNutrition(ctx, plan, uiState.clientName) } },
+                ) {
+                    Icon(
+                        Icons.Filled.PictureAsPdf,
+                        contentDescription = stringResource(R.string.action_export_pdf),
+                    )
+                }
+            }
         }
         when {
             uiState.isLoading -> LoadingState()

@@ -21,6 +21,16 @@ fun requiredProperty(name: String): String =
     localProperties.getProperty(name)?.takeIf { it.isNotBlank() }
         ?: error("Missing '$name' in local.properties. Add it before building (see CLAUDE.md section 3).")
 
+// Release signing is optional: only wired up when keystore.properties (gitignored) exists.
+// Debug builds are unaffected. See keystore.properties.sample for the expected keys.
+val keystoreProperties = Properties().apply {
+    val propertiesFile = rootProject.file("keystore.properties")
+    if (propertiesFile.exists()) {
+        propertiesFile.inputStream().use { load(it) }
+    }
+}
+val hasReleaseKeystore = keystoreProperties.getProperty("storeFile")?.isNotBlank() == true
+
 android {
     namespace = "com.kutluhangul.liftgenius"
     compileSdk {
@@ -44,10 +54,28 @@ android {
         buildConfigField("String", "GEMINI_API_KEY", "\"${localProperties.getProperty("GEMINI_API_KEY").orEmpty()}\"")
     }
 
+    signingConfigs {
+        if (hasReleaseKeystore) {
+            create("release") {
+                storeFile = rootProject.file(keystoreProperties.getProperty("storeFile"))
+                storePassword = keystoreProperties.getProperty("storePassword")
+                keyAlias = keystoreProperties.getProperty("keyAlias")
+                keyPassword = keystoreProperties.getProperty("keyPassword")
+            }
+        }
+    }
+
     buildTypes {
         release {
-            optimization {
-                enable = false
+            isMinifyEnabled = true
+            isShrinkResources = true
+            proguardFiles(
+                getDefaultProguardFile("proguard-android-optimize.txt"),
+                "proguard-rules.pro",
+            )
+            // Falls back to unsigned output until keystore.properties is provided.
+            if (hasReleaseKeystore) {
+                signingConfig = signingConfigs.getByName("release")
             }
         }
     }

@@ -164,4 +164,16 @@
     <string name="team_manage">Takımı Yönet</string>
     <string name="team_empty">Takımda başka eğitmen yok.</string>
     <string name="team_you">Sen</string>
+
+    <!-- PDF export -->
+    <string name="action_export_pdf">PDF olarak paylaş</string>
+    <string name="pdf_share_chooser">PDF paylaş</string>
+    <string name="pdf_export_failed">PDF oluşturulamadı: %1$s</string>
+    <string name="pdf_workout_heading">Antrenman Programı</string>
+    <string name="pdf_nutrition_heading">Beslenme Planı</string>
+    <string name="pdf_finance_heading">Finans Özeti</string>
+    <string name="pdf_generated_on">Oluşturulma: %1$s</string>
+
+    <!-- Widget -->
+    <string name="widget_tagline">Danışanlarını yönet</string>
 </resources>

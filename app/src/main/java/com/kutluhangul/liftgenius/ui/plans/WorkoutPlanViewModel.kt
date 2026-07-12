@@ -3,6 +3,7 @@ package com.kutluhangul.liftgenius.ui.plans
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.kutluhangul.liftgenius.data.repository.ClientRepository
 import com.kutluhangul.liftgenius.data.repository.WorkoutRepository
 import com.kutluhangul.liftgenius.domain.model.Exercise
 import com.kutluhangul.liftgenius.domain.model.WorkoutDay
@@ -21,6 +22,7 @@ import javax.inject.Inject
 @HiltViewModel
 class WorkoutPlanViewModel @Inject constructor(
     private val workoutRepository: WorkoutRepository,
+    private val clientRepository: ClientRepository,
     savedStateHandle: SavedStateHandle,
 ) : ViewModel() {
 
@@ -38,6 +40,7 @@ class WorkoutPlanViewModel @Inject constructor(
         val error: String? = null,
         val plan: WorkoutPlan? = null,
         val days: List<DayWithExercises> = emptyList(),
+        val clientName: String? = null,
     )
 
     private val _uiState = MutableStateFlow(UiState())
@@ -57,11 +60,15 @@ class WorkoutPlanViewModel @Inject constructor(
                     val daysWithExercises = days.map { day ->
                         async { DayWithExercises(day, workoutRepository.getExercises(day.id)) }
                     }.map { it.await() }
+                    val plan = planDeferred.await()
+                    val clientName = runCatching { clientRepository.getClient(plan.clientId).fullName }
+                        .getOrNull()
                     _uiState.update {
                         it.copy(
                             isLoading = false,
-                            plan = planDeferred.await(),
+                            plan = plan,
                             days = daysWithExercises,
+                            clientName = clientName,
                         )
                     }
                 }

@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Brand gradient accent bar (turuncu→pembe, DESIGN.md §1). -->
+<shape xmlns:android="http://schemas.android.com/apk/res/android"
+    android:shape="rectangle">
+    <gradient
+        android:startColor="#FF6B1A"
+        android:centerColor="#FF4455"
+        android:endColor="#FF2D8B"
+        android:angle="90" />
+    <corners android:radius="4dp" />
+</shape>

@@ -3,6 +3,7 @@ package com.kutluhangul.liftgenius.ui.plans
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.kutluhangul.liftgenius.data.repository.ClientRepository
 import com.kutluhangul.liftgenius.data.repository.NutritionRepository
 import com.kutluhangul.liftgenius.domain.model.NutritionPlan
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -17,6 +18,7 @@ import javax.inject.Inject
 @HiltViewModel
 class NutritionPlanViewModel @Inject constructor(
     private val nutritionRepository: NutritionRepository,
+    private val clientRepository: ClientRepository,
     savedStateHandle: SavedStateHandle,
 ) : ViewModel() {
 
@@ -28,6 +30,7 @@ class NutritionPlanViewModel @Inject constructor(
         val isLoading: Boolean = true,
         val error: String? = null,
         val plan: NutritionPlan? = null,
+        val clientName: String? = null,
     )
 
     private val _uiState = MutableStateFlow(UiState())
@@ -42,7 +45,9 @@ class NutritionPlanViewModel @Inject constructor(
             _uiState.update { it.copy(isLoading = true, error = null) }
             try {
                 val plan = nutritionRepository.getPlan(planId)
-                _uiState.update { it.copy(isLoading = false, plan = plan) }
+                val clientName = runCatching { clientRepository.getClient(plan.clientId).fullName }
+                    .getOrNull()
+                _uiState.update { it.copy(isLoading = false, plan = plan, clientName = clientName) }
             } catch (e: CancellationException) {
                 throw e
             } catch (e: Exception) {

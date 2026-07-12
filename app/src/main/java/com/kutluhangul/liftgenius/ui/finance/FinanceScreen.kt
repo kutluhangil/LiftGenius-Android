@@ -13,6 +13,10 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.PictureAsPdf
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -23,12 +27,14 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.kutluhangul.liftgenius.R
+import com.kutluhangul.liftgenius.pdf.PdfExporter
 import com.kutluhangul.liftgenius.ui.common.Formatters
 import com.kutluhangul.liftgenius.ui.components.EmptyState
 import com.kutluhangul.liftgenius.ui.components.ErrorState
 import com.kutluhangul.liftgenius.ui.components.GlassCard
 import com.kutluhangul.liftgenius.ui.components.LoadingState
 import com.kutluhangul.liftgenius.ui.components.StatCard
+import com.kutluhangul.liftgenius.ui.components.rememberPdfShareLauncher
 import com.kutluhangul.liftgenius.ui.theme.Spacing
 import com.kutluhangul.liftgenius.ui.theme.extended
 import kotlin.time.ExperimentalTime
@@ -36,6 +42,7 @@ import kotlin.time.ExperimentalTime
 @Composable
 fun FinanceScreen(viewModel: FinanceViewModel = hiltViewModel()) {
     val uiState by viewModel.uiState.collectAsState()
+    val sharePdf = rememberPdfShareLauncher()
 
     when {
         uiState.isLoading -> LoadingState()
@@ -43,12 +50,22 @@ fun FinanceScreen(viewModel: FinanceViewModel = hiltViewModel()) {
             message = uiState.error ?: stringResource(R.string.state_error_generic),
             onRetry = viewModel::load,
         )
-        else -> FinanceContent(uiState)
+        else -> FinanceContent(
+            uiState = uiState,
+            onExportPdf = {
+                sharePdf { ctx ->
+                    PdfExporter.exportFinance(ctx, uiState.packages, uiState.clientNames)
+                }
+            },
+        )
     }
 }
 
 @Composable
-private fun FinanceContent(uiState: FinanceViewModel.UiState) {
+private fun FinanceContent(
+    uiState: FinanceViewModel.UiState,
+    onExportPdf: () -> Unit,
+) {
     LazyColumn(
         modifier = Modifier
             .fillMaxSize()
@@ -57,10 +74,21 @@ private fun FinanceContent(uiState: FinanceViewModel.UiState) {
         verticalArrangement = Arrangement.spacedBy(Spacing.md),
     ) {
         item {
-            Text(
-                text = stringResource(R.string.tab_finance),
-                style = MaterialTheme.typography.headlineLarge,
-            )
+            Row(verticalAlignment = Alignment.CenterVertically) {
+                Text(
+                    text = stringResource(R.string.tab_finance),
+                    style = MaterialTheme.typography.headlineLarge,
+                    modifier = Modifier.weight(1f),
+                )
+                if (uiState.packages.isNotEmpty()) {
+                    IconButton(onClick = onExportPdf) {
+                        Icon(
+                            Icons.Filled.PictureAsPdf,
+                            contentDescription = stringResource(R.string.action_export_pdf),
+                        )
+                    }
+                }
+            }
         }
         item {
             Row(horizontalArrangement = Arrangement.spacedBy(Spacing.md)) {

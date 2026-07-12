@@ -13,6 +13,7 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
+import androidx.compose.material.icons.filled.PictureAsPdf
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
@@ -25,9 +26,11 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.kutluhangul.liftgenius.R
+import com.kutluhangul.liftgenius.pdf.PdfExporter
 import com.kutluhangul.liftgenius.ui.components.ErrorState
 import com.kutluhangul.liftgenius.ui.components.GlassCard
 import com.kutluhangul.liftgenius.ui.components.LoadingState
+import com.kutluhangul.liftgenius.ui.components.rememberPdfShareLauncher
 import com.kutluhangul.liftgenius.ui.theme.Spacing
 import com.kutluhangul.liftgenius.ui.theme.extended
 
@@ -37,6 +40,7 @@ fun WorkoutPlanScreen(
     viewModel: WorkoutPlanViewModel = hiltViewModel(),
 ) {
     val uiState by viewModel.uiState.collectAsState()
+    val sharePdf = rememberPdfShareLauncher()
 
     Column(
         modifier = Modifier
@@ -53,7 +57,23 @@ fun WorkoutPlanScreen(
             Text(
                 text = uiState.plan?.title.orEmpty(),
                 style = MaterialTheme.typography.titleMedium,
+                modifier = Modifier.weight(1f),
             )
+            uiState.plan?.let { plan ->
+                IconButton(
+                    onClick = {
+                        val days = uiState.days.map { PdfExporter.DayContent(it.day, it.exercises) }
+                        sharePdf { ctx ->
+                            PdfExporter.exportWorkout(ctx, plan, days, uiState.clientName)
+                        }
+                    },
+                ) {
+                    Icon(
+                        Icons.Filled.PictureAsPdf,
+                        contentDescription = stringResource(R.string.action_export_pdf),
+                    )
+                }
+            }
         }
         when {
             uiState.isLoading -> LoadingState()
