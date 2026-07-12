@@ -2,6 +2,7 @@ package com.kutluhangul.liftgenius.ui.common
 
 import com.kutluhangul.liftgenius.domain.model.ClientStatus
 import com.kutluhangul.liftgenius.domain.model.FitnessGoal
+import com.kutluhangul.liftgenius.domain.model.Gender
 import com.kutluhangul.liftgenius.domain.model.PaymentMethod
 import com.kutluhangul.liftgenius.domain.model.SessionStatus
 import com.kutluhangul.liftgenius.domain.model.TrainerRole
@@ -22,6 +23,12 @@ fun FitnessGoal.label(): String = when (this) {
     FitnessGoal.REHABILITATION -> "Rehabilitasyon"
     FitnessGoal.POSTURE -> "Postür"
     FitnessGoal.WEIGHT_GAIN -> "Kilo Alma"
+}
+
+fun Gender.label(): String = when (this) {
+    Gender.MALE -> "Erkek"
+    Gender.FEMALE -> "Kadın"
+    Gender.OTHER -> "Diğer"
 }
 
 fun ClientStatus.label(): String = when (this) {

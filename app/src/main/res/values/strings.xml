@@ -138,11 +138,20 @@
 
     <!-- Add session -->
     <string name="add_session_title">Yeni Seans</string>
+    <string name="session_details">Seans Detayları</string>
     <string name="label_client">Müşteri</string>
+    <string name="label_date_time">Tarih ve Saat</string>
     <string name="label_date">Tarih</string>
     <string name="label_time">Saat</string>
-    <string name="label_duration">Süre (dk)</string>
+    <string name="label_duration">Süre (dakika)</string>
     <string name="label_title">Başlık</string>
+    <string name="session_focus">Antrenman Odağı</string>
+    <string name="session_intensity">Yoğunluk</string>
+    <string name="session_title_placeholder">Örn: Göğüs + Triceps</string>
+    <string name="session_client_hint">Önce müşteri eklemelisiniz.</string>
+    <string name="intensity_low">Düşük</string>
+    <string name="intensity_mid">Orta</string>
+    <string name="intensity_high">Yüksek</string>
     <string name="error_client_required">Müşteri seç.</string>
 
     <!-- Add package -->

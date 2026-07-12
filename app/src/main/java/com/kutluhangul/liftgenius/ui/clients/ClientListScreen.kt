@@ -1,5 +1,6 @@
 package com.kutluhangul.liftgenius.ui.clients
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -10,12 +11,14 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
+import androidx.compose.material.icons.filled.GroupOff
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
@@ -28,6 +31,7 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -35,9 +39,9 @@ import com.kutluhangul.liftgenius.R
 import com.kutluhangul.liftgenius.domain.model.Client
 import com.kutluhangul.liftgenius.ui.common.label
 import com.kutluhangul.liftgenius.ui.components.ClientStatusChip
-import com.kutluhangul.liftgenius.ui.components.EmptyState
 import com.kutluhangul.liftgenius.ui.components.ErrorState
 import com.kutluhangul.liftgenius.ui.components.GlassCard
+import com.kutluhangul.liftgenius.ui.components.GradientButton
 import com.kutluhangul.liftgenius.ui.components.InitialsAvatar
 import com.kutluhangul.liftgenius.ui.components.LoadingState
 import com.kutluhangul.liftgenius.ui.theme.OnAccent
@@ -90,7 +94,7 @@ fun ClientListScreen(
                     message = uiState.error ?: stringResource(R.string.state_error_generic),
                     onRetry = viewModel::load,
                 )
-                uiState.filteredClients.isEmpty() -> EmptyState(stringResource(R.string.clients_empty))
+                uiState.filteredClients.isEmpty() -> ClientsEmptyState(onAddClick)
                 else -> LazyColumn(
                     contentPadding = PaddingValues(bottom = 96.dp),
                     verticalArrangement = Arrangement.spacedBy(Spacing.md),
@@ -111,6 +115,49 @@ fun ClientListScreen(
         ) {
             Icon(Icons.Filled.Add, contentDescription = stringResource(R.string.clients_add_title))
         }
+    }
+}
+
+@Composable
+private fun ClientsEmptyState(onAddClick: () -> Unit) {
+    Column(
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(Spacing.xxl),
+        horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.Center,
+    ) {
+        Box(
+            modifier = Modifier
+                .size(88.dp)
+                .clip(MaterialTheme.shapes.large)
+                .background(MaterialTheme.colorScheme.surfaceContainer),
+            contentAlignment = Alignment.Center,
+        ) {
+            Icon(
+                imageVector = Icons.Filled.GroupOff,
+                contentDescription = null,
+                tint = MaterialTheme.colorScheme.primary,
+                modifier = Modifier.size(40.dp),
+            )
+        }
+        Spacer(Modifier.height(Spacing.xl))
+        Text(
+            text = stringResource(R.string.clients_empty),
+            style = MaterialTheme.typography.titleLarge,
+        )
+        Spacer(Modifier.height(Spacing.xs))
+        Text(
+            text = stringResource(R.string.clients_empty_subtitle),
+            style = MaterialTheme.typography.bodyMedium,
+            color = MaterialTheme.extended.textSecondary,
+        )
+        Spacer(Modifier.height(Spacing.xl))
+        GradientButton(
+            text = stringResource(R.string.clients_add_button),
+            onClick = onAddClick,
+            modifier = Modifier.fillMaxWidth(),
+        )
     }
 }
 
